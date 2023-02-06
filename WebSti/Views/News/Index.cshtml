@@ -1,0 +1,89 @@
+﻿@model GetNewsQueryUI
+
+@{
+    ViewData["Title"] = "Новости";
+    var news = (IPager<NewsCommandDto>)ViewData["News"];
+}
+
+<div class="row">
+    <div class="col-md-2">
+        <h2 class="mt-5">
+            <b>Новости</b>
+        </h2>
+        <div class="card NewsMainFeature">
+            <div class="border-bottom">
+                <a asp-action="Index">@Localize("news")</a>
+            </div>
+            @*<div class="border-bottom">
+                <a href="#">@EnumExtensions.GetDisplayValue(NewsState.LatestNews)</a>
+            </div>*@
+            <div class="border-bottom">
+                <a asp-action="Index" asp-route-NewsState=@NewsState.IsActual>@Localize("сurrentnews")</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div class="my-5 SearchingBox">
+            <form asp-action="Index" method="get">
+                <div class="form-row align-items-center">
+                    <div class="col-md-6">
+                        <label>Поиск по ключевым словам </label>
+                        <input type="hidden" id="newsstate" value="" />
+                        <input type="text" class="form-control" id="searchKey" placeholder="Ключевые слова" asp-for="@Model.SearchWord">
+                    </div>
+                    <div class="col-md-2">
+                        <label>Период с </label>
+                        <input class="form-control" type="date" id="datepicker" asp-for="@Model.DateStart" data-auto-apply="true" />
+                    </div>
+                    <div class="col-md-2">
+                        <label>Период по</label>
+                        <input class="form-control" type="date" id="datepicker" asp-for="@Model.DateEnd" data-auto-apply="true" />
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" id="search" class="btn btn-primary text-white w-100">Найти</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        @foreach (var item in news)
+        {
+            <div class="col-md-12 border-bottom mb-3">
+                <p class="main-text info-text-type"><span class="text-muted mr-2">@item.PublishDate.ToString("dd-MMMM-yyyy HHHH:mm") </span></p>
+                <h5 class="card-title ">
+                    <a asp-controller="News" asp-action="Details" asp-route-id="@item.Id"> @item.Title</a>
+                </h5>
+                <p class="card-text text-justify text-truncate">@Html.Raw(item.ShortDescription)</p>
+            </div>
+        }
+        @Html.Pager(news, page => Url.Action("Index", new
+                                            {
+                                                page,
+                                                Title = Model.SearchWord,
+                                                Date = Model.Date
+                                            }),
+                                            new PagerOptions
+                                            {
+                                                PagesToDisplay = 15,
+                                                ClassToActiveLi = "text-black-50 border-0",
+                                                ClassToLi = "text-black-50 border-0 text-dark mt-3",
+                                                ClassToPagerContainer = "d-flex justify-content-center"
+                                            })
+    </div>  
+</div>
+
+<style>   
+    .NewsMainFeature {
+        border: none;
+        background-color: transparent;
+        border-radius:0;
+        box-shadow:none;
+    }
+    .NewsMainFeature div{
+        margin: 10px 15px 15px 0;
+    }
+
+    .SearchingBox .align-items-center {
+        align-items: end !important;
+    }
+</style>

@@ -1,0 +1,40 @@
+﻿@model IList<LinkCommandDto>
+
+
+<h3 class="Headers pb-2">@Localize("otherlinks")</h3>
+<hr />
+<div class="lunchbox container-fluid px-0 pt-3 pb-5">
+    <div class="swiper-area">
+        <div class="swiper otherLinksSwiper">
+            <!-- Additional required wrapper -->
+            <div class="swiper-wrapper h-75">
+                <!-- Slides -->
+                @foreach (var item in Model)
+                {
+                    <div class="swiper-slide">
+                        <div class="card baseBlock">
+                            <div class="card-body d-flex flex-column text-center">
+                                <p><img class=" img-fluid OtherLinksImg" src="~/stsStorage/@item.MainImagePath" alt="card image"></p>
+                                <h5 class="card-title">@item.Title</h5>
+                                @if(@item.LinkSource.Substring(0, 8).Contains("http://"))
+                                {
+                                    <a href="@item.LinkSource" target="_blank" class="card-link">@item.LinkSource.Remove(0, 7)</a>
+                                }                                   
+                                else
+                                {
+                                    <a href="@item.LinkSource" target="_blank" class="card-link">@item.LinkSource.Remove(0, 8)</a>
+                                }                             
+                            </div>
+                        </div>
+                    </div>
+                }               
+            </div>
+            <!-- If we need pagination -->
+        </div>
+        <div class="swiper-pagination"></div>
+        <!-- If we need navigation buttons -->
+        <div class="swiper-button-prev otherLinkPrevButton"></div>
+        <div class="swiper-button-next otherLinkNextButton"></div>
+    </div>
+
+</div>

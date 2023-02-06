@@ -1,0 +1,90 @@
+﻿@model (IPager<ThemeDto> ThemeDto, SectionType SectionType, Guid? themeId)
+@{
+    int index = 0;
+}
+<style>
+    body {
+        background-color: #fff;
+    }
+
+    .pa {
+        position: absolute;
+        top: 5px;
+        right: 20px;
+        font-size: 20px;
+        color: white;
+        -webkit-animation: minus 0.5s;
+    }
+
+    @@keyframes minus {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    [aria-expanded="false"] > .expanded, [aria-expanded="true"] > .collapsed {
+        display: none;
+    }
+</style>
+<script>
+    let yearDocumentCounter = 0;
+</script>
+<div class="row">
+    <div class="col-12" id="theme">
+        <div id="accordion">
+            @foreach (var item in Model.ThemeDto.OrderBy(x=>x.ThemeOrder))
+            {
+                index++;                
+                @if (item.IsLeadership)
+                {
+                    @await Component.InvokeAsync("Leadership", new { themeId = item.Id, sectionType = item.SectionType, documentYear = 0 })
+
+                }
+                
+                if (Model.themeId == item.Id)
+                {
+                    @if (!item.IsLeadership)
+                    {                        
+                        <div class="card" style="background-color:transparent;border-radius: 1px;">
+                            <div class="card-header" id="heading_@index" style="background-color:transparent;border-radius: 1px;">
+                                <a class="card-link" data-toggle="collapse" href="#menu_@index" aria-expanded="true" aria-controls="menu_@index">
+                                    @item.Title<span class="collapsed pa text-dark"><b><i class="bi bi-chevron-double-down black"></i></b></span>
+                                    <span class="expanded pa text-dark"><b><i class="bi bi-chevron-double-up black"></i> </b></span>
+                                </a>
+                            </div>
+                            <div id="menu_@index" class="expanded collapse show">
+                                <div class="card-body">
+                                    @await Component.InvokeAsync("Documents", new { themeId = item.Id, sectionType = item.SectionType, documentYear = 0, index = index})
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                if (Model.themeId != item.Id)
+                {
+                    @if (!item.IsLeadership)
+                    {
+                        <div class="card" style="background-color:transparent;border-radius: 1px;">
+                            <div class="card-header" id="heading_@index" style="background-color:transparent;border-radius: 1px;">
+                                <a class="card-link" data-toggle="collapse" href="#menu_@index" aria-expanded="false" aria-controls="menu_@index">
+                                    @item.Title<span class="collapsed pa text-dark"><b><i class="bi bi-chevron-double-down black"></i></b></span>
+                                    <span class="expanded pa text-dark"><b><i class="bi bi-chevron-double-up black"></i> </b></span>
+                                </a>
+                            </div>
+                            <div id="menu_@index" class="collapse">
+                                <div class="card-body">
+                                    @await Component.InvokeAsync("Documents", new { themeId = item.Id, sectionType = item.SectionType, documentYear = 0, index = index})
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                <br>
+            }
+        </div>
+    </div>
+</div>

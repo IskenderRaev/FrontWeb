@@ -1,0 +1,83 @@
+﻿@model (ThemeCommandDto themeDto,IPager<DocumentDto> documentDto)
+
+@{
+    ViewData["Title"] = Localize(Model.themeDto.TitleRu);
+    bool isPrevYears = (bool)ViewData["PrevYears"];
+    int activeYear = (int)ViewData["ActiveYear"];
+
+    int years = DateTime.UtcNow.Year - 10;
+
+    if (isPrevYears)
+    {
+        years -= 11;
+    }
+}
+
+<h2 class="my-4">
+    <b>@ViewData["Title"]</b>
+</h2>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-action="index" asp-controller="home">Главная страница</a></li>
+        <li class="breadcrumb-item"><a asp-action="index" asp-controller="section" asp-route-sectionType="@((int)Model.themeDto.SectionType)" asp-route-subsectionId="@Model.themeDto.SubsectionId">@Model.themeDto.SubsectionName</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Model.themeDto.Title</li>
+    </ol>
+</nav>
+<div class="mb-5">
+    <div class="row">
+        <div class="btn-group col-12">
+            @if (years != 2000)
+            {
+                <a asp-action="theme" asp-route-prevYears="true" type="button" class="btn btn-block btn-outline-primary">Предыдущие годы</a>
+            }
+            @for (var i = years; i <= years + 10; i++)
+            {
+                <a asp-action="theme" asp-route-year="@i" asp-route-prevYears="@isPrevYears" class="btn btn-outline-primary w-100 @(i == activeYear ? "active" : null)">@i</a>
+            } 
+            @if (years + 11 != DateTime.UtcNow.Year + 1)
+            {
+                <a asp-action="theme" asp-route-prevYears="false" type="button" class="btn btn-block btn-outline-primary">Следующие годы</a>
+            }
+        </div>
+    </div>
+
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Наименование</th>
+            <th scope="col" class="text-center">Файл</th>
+            @if (Model.themeDto.IsAdditionalFile)
+            {
+                <th scope="col" class="text-center">Порядок заполнения отчета</th>
+            }
+            @if (Model.themeDto.IsUrl)
+            {
+                <th scope="col" class="text-center">Ссылка</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.documentDto)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td class="text-center"><a href="~/stsStorage/@item.FileUri"><img src="/images/pdf.svg" alt="Скачать ПДФ" /></a></td>
+                @if (!string.IsNullOrWhiteSpace(@item.AdditionalFileUri))
+                {
+                    <td class="text-center">
+
+                        <a href="~/stsStorage/@item.AdditionalFileUri"><img src="/images/pdf.svg" alt="Скачать ПДФ" /></a>
+                    </td>
+                }
+                @if (!string.IsNullOrWhiteSpace(@item.Url))
+                {
+                    <td class="text-center">
+                        <a href="@item.Url"><i class="i-Link-2 text-28"></i></a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

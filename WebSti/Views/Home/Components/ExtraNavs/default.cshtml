@@ -1,0 +1,28 @@
+﻿@model IList<SubsectionDto>
+
+<h3 class="Headers">@Localize("othersections")</h3>
+<hr />
+<div class="row OtherSections pt-3">
+    <div class="col-xl-2 col-lg-3 col-md-6 col-sm-6 mb-4">
+        <a href="https://testcabinet.salyk.kg/nonprofit/journal" target="_blank">
+            <div class='baseBlock card card-icon-bg card-icon-bg-primary o-hidden h-100'>
+                <div class='card-body'>
+                    <p class='text-primary'>@Localize("nko")</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    @foreach (var item in Model.OrderBy(x=>x.SubsectionOrder))
+    {
+        <div class="col-xl-2 col-lg-3 col-md-6 col-sm-6 mb-4">
+        <a asp-controller="Section" asp-action="Index" asp-route-sectionType="@((int)SectionType.Nav)" asp-route-subsectionId="@item.Id">
+            <div class='baseBlock card card-icon-bg card-icon-bg-primary o-hidden h-100'>
+                <div class='card-body'>
+                    <p class='text-primary'>@item.Title</p>
+                </div>
+            </div>
+        </a>
+        </div>
+
+    }    
+</div>

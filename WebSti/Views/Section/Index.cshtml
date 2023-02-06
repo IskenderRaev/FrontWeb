@@ -1,0 +1,66 @@
+﻿@model (Guid? SubsectionId, List<SubsectionDto> Subsections, SectionType SectionType, Guid? themeId, int Page)
+@{
+    ViewData["Title"] = Model.Subsections.FirstOrDefault(s => s.Id == Model.SubsectionId).Title;
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="" style="background: rgba(1, 138, 144, 0.05); font-size:13px;">
+            <nav aria-label="breadcrumb ">
+                <ol class="breadcrumb pb-1">
+                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="home">@Localize("mainpage")</a></li>
+                    @if (Model.Subsections.FirstOrDefault(s => s.Id.ToString() == Model.Subsections.FirstOrDefault(s => s.Id == Model.SubsectionId).ParentId) != null)
+                    {
+                        <li class="breadcrumb-item" aria-current="page">@Model.Subsections.FirstOrDefault(s => s.Id.ToString() == Model.Subsections.FirstOrDefault(s => s.Id == Model.SubsectionId).ParentId).Title</li>
+                    }
+                    <li class="breadcrumb-item active" aria-current="page">@ViewData["Title"]</li>
+                </ol>
+            </nav>
+        </div>
+
+    </div>
+    @if (Model.Subsections.Where(x => x.SectionType == SectionType.LeftNav).Count() > 0)
+    {
+        <div class="col-lg-3 col-md-3 col-sm-12">
+            <div class="col-12 border-bottom py-12 px-1 text-18">@ViewData["Title"]</div>
+            @foreach (var item in Model.Subsections.Where(x => x.SectionType == SectionType.LeftNav).OrderBy(x=>x.SubsectionOrder))
+            {
+                if (item.ParentId == Model.SubsectionId.ToString())
+                {
+                    @if (item.SectionType == SectionType.LeftNav)
+                    {
+
+
+                        <div class="col-12 border-bottom py-12 px-1 text-16"><a asp-action="Index" asp-route-subsectionId="@item.Id" asp-controller="Section" class="link active-link">@item.Title</a></div>
+
+                    }
+                }
+                if (item.ParentId == Model.Subsections.FirstOrDefault(s => s.Id == Model.SubsectionId).ParentId)
+                {
+                    @if (item.SectionType == SectionType.LeftNav)
+                    {
+                        <div class="col-12 border-bottom py-12 px-1 text-16"><a asp-action="Index" asp-route-subsectionId="@item.Id" asp-controller="Section" class="link active-link">@item.Title</a></div>
+
+                    }
+                }
+
+            }
+        </div>
+    }
+
+    @if (Model.SubsectionId.HasValue)
+    {
+        <div class="col-lg-9 col-md-8 col-sm-12 py-12">
+            <div class="border-bottom">
+                <h4 class="font-weight-bold mb-2" style="color: #018A90;">@Model.Subsections.FirstOrDefault(s => s.Id == Model.SubsectionId).Title</h4>
+            </div>
+            <div class="pt-2">
+                @await Component.InvokeAsync("Themes", new { subsectionid = Model.SubsectionId, sectionType = Model.SectionType, Model.themeId, Model.Page })
+            </div>
+        </div>
+    }
+    else
+    {
+        <p> Выберите подраздел</p>
+    }
+
+</div>

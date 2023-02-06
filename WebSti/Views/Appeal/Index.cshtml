@@ -1,0 +1,183 @@
+﻿@model GetRegionWithDepartmentQuery
+
+@{
+    ViewData["Title"] = $"Электронное обращение";
+    var regions = (List<DictRegionWithDepartmentsDto>)ViewData["RegionDepartments"];
+}
+<h1> Электронное обращение</h1>
+<table>
+    <tbody>
+        @foreach (var region in regions)
+        {
+            if (region.Name.Equals("г. Бишкек"))
+            {
+                <tr>
+                    <td>
+                        <p><b>город Бишкек</b></p>
+                    </td>
+                </tr>
+                foreach (var deparment in region.DepartmentDtos)
+                {
+                    <tr>
+                        <td>
+                            <p>@deparment.Name</p>
+                        </td>
+                        <td>
+                            <a href="mailto:@deparment.Email">
+                                <p>@deparment.Email</p>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else if (region.Name.Equals("Чуйская область"))
+            {
+                <tr>
+                    <td>
+                        <p><b>Чуйская область</b></p>
+                    </td>
+                </tr>
+                foreach (var deparment in region.DepartmentDtos)
+                {
+                    <tr>
+                        <td>
+                            <p>@deparment.Name</p>
+                        </td>
+                        <td>
+                            <a href="mailto:@deparment.Email">
+                                <p>@deparment.Email</p>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else if (region.Name.Equals("Таласская область"))
+            {
+                <tr>
+                    <td>
+                        <p><b>Таласская область</b></p>
+                    </td>
+                </tr>
+                foreach (var deparment in region.DepartmentDtos)
+                {
+                    <tr>
+                        <td>
+                            <p>@deparment.Name</p>
+                        </td>
+                        <td>
+                            <a href="mailto:@deparment.Email">
+                                <p>@deparment.Email</p>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else if (region.Name.Equals("Иссык-Кульская область"))
+            {
+                <tr>
+                    <td>
+                        <p><b>Иссык-Кульская область</b></p>
+                    </td>
+                </tr>
+                foreach (var deparment in region.DepartmentDtos)
+                {
+                    <tr>
+                        <td>
+                            <p>@deparment.Name</p>
+                        </td>
+                        <td>
+                            <a href="mailto:@deparment.Email">
+                                <p>@deparment.Email</p>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else if (region.Name.Equals("Нарынская область"))
+            {
+                <tr>
+                    <td>
+                        <p><b>Нарынская область</b></p>
+                    </td>
+                </tr>
+                foreach (var deparment in region.DepartmentDtos)
+                {
+                    <tr>
+                        <td>
+                            <p>@deparment.Name</p>
+                        </td>
+                        <td>
+                            <a href="mailto:@deparment.Email">
+                                <p>@deparment.Email</p>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else if (region.Name.Equals("Ошская область"))
+            {
+                <tr>
+                    <td>
+                        <p><b>Ошская область</b></p>
+                    </td>
+                </tr>
+                foreach (var deparment in region.DepartmentDtos)
+                {
+                    <tr>
+                        <td>
+                            <p>@deparment.Name</p>
+                        </td>
+                        <td>
+                            <a href="mailto:@deparment.Email">
+                                <p>@deparment.Email</p>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else if (region.Name.Equals("Баткенская область"))
+            {
+                <tr>
+                    <td>
+                        <p><b>Баткенская область</b></p>
+                    </td>
+                </tr>
+                foreach (var deparment in region.DepartmentDtos)
+                {
+                    <tr>
+                        <td>
+                            <p>@deparment.Name</p>
+                        </td>
+                        <td>
+                            <a href="mailto:@deparment.Email">
+                                <p>@deparment.Email</p>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else if (region.Name.Equals("Жалал-Абадская область"))
+            {
+                <tr>
+                    <td>
+                        <p><b>Жалал-Абадская область</b></p>
+                    </td>
+                </tr>
+                foreach (var deparment in region.DepartmentDtos)
+                {
+                    <tr>
+                        <td>
+                            <p>@deparment.Name</p>
+                        </td>
+                        <td>
+                            <a href="mailto:@deparment.Email">
+                                <p>@deparment.Email</p>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>
+

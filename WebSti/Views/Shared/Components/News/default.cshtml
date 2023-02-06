@@ -1,0 +1,11 @@
+﻿@model IEnumerable<NewsDto>
+
+@foreach (var item in Model)
+{
+    <hr />
+    <div class="pl-4 pr-5">
+        <span class="small">@item.PublishDate.ToString("dd-MM-yyyy HHHH:MMMM")</span>
+        <h5>@item.HeaderRu </h5>
+        <a href="#"><p class="my-2">Налоговые соглашения</p></a>  
+    </div>
+}

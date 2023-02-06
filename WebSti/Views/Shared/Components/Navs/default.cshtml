@@ -1,0 +1,7 @@
+﻿@model IList<SubsectionDto>
+
+@foreach (var item in Model.OrderBy(x=>x.SubsectionOrder))
+{
+    <a asp-action="Index" asp-route-sectionType="@((int)SectionType.Nav)" asp-route-subsectionId="@item.Id" asp-controller="Section" class="navbar-brand" style="color: black">@item.Title
+    </a>
+}

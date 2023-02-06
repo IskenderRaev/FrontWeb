@@ -1,0 +1,47 @@
+﻿@model IList<ActualNewsCommandDto>
+
+<div class="card mt-3" id="slider">
+    <div id="newsCarousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner" style="" role="listbox">
+            @foreach (var item in Model)
+            {
+                <div class="carousel-item  @(Model.First() == item ? "active" : "")">
+                    <div class="CarouselImage">
+                        <a asp-controller="News" asp-action="Details" asp-route-id="@item.Id"><img src="~/stsStorage/@item.ImagePath" alt="Alternate Text" /></a>
+                    </div>
+                    <div class="carousel-caption CarouselTitle w-100 ">
+                        <a asp-controller="News" asp-action="Details" asp-route-id="@item.Id" class="active news-title mt-4">@item.Title</a>
+                    </div>
+                </div>
+            }
+        </div>
+        <ol class="carousel-indicators">
+            <li data-target="#newsCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#newsCarousel" data-slide-to="1"></li>
+            <li data-target="#newsCarousel" data-slide-to="2"></li>
+            <li data-target="#newsCarousel" data-slide-to="3"></li>
+            <li data-target="#newsCarousel" data-slide-to="4"></li>
+        </ol>
+    </div>    
+</div>
+@section Scripts {
+    <environment names="Development,Staging,Production">
+        <script type="text/javascript">
+            $(document).ready(function (e) {
+
+                // live handler
+                lc_lightbox('.elem', {
+                    wrap_class: 'lcl_fade_oc',
+                    gallery: true,
+                    thumb_attr: 'data-lcl-thumb',
+
+                    skin: 'minimal',
+                    radius: 0,
+                    padding: 0,
+                    border_w: 0,
+                });
+
+            });
+        </script>
+    </environment>
+    }

@@ -1,0 +1,1025 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ГНС</title>
+    @*<link rel="stylesheet" href="~/css/StyleSheet.css">*@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/4.1.5/css/flag-icons.min.css" />
+    <link href="~/css/raleway.css" rel="stylesheet" />
+    <link href="~/css/lite-purple.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/css/phosphor.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link href="~/css/lc_lightbox.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="~/css/press-center.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/brands.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/fontawesome.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="~/lib/swiper/swiper-bundle.css" />
+    <link rel="stylesheet" href="~/lib/animated-event-calendar/dist/simple-calendar.css">
+    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="~/lib/select2-bootstrap-theme/select2-bootstrap.css" rel="stylesheet" />
+    <link href="~/lib/sweetalert/dist/sweetalert.css" rel="stylesheet" />
+    
+</head>
+<body>
+    @using Microsoft.AspNetCore.Builder
+    @using Microsoft.AspNetCore.Localization
+    @using Microsoft.Extensions.Options
+
+    @inject IOptions<RequestLocalizationOptions> LocOptions    
+    @{
+        string returnUrl = ViewContext.HttpContext.Request.Path;
+
+        var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+        var cultureItems = LocOptions.Value.SupportedUICultures
+        .Select(c => new SelectListItem { Value = c.Name, Text = c.NativeName })
+        .ToList();
+        int yearOfWebsite = DateTime.Now.Year;
+    }
+    <div style="background: url('../../images/Resourse.png') no-repeat; background-size: cover; background-position: center;">
+        <div class="container navbarHeaderTop" style="height:36px">
+            <nav class="navbar navbar-expand-lg" style="color:#018A90; ">
+                <div class="container p-0">
+                    <div class="dropdown text-white">
+                        <button class="btn dropdown-toggle" style="background: transparent; color: white;" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @Localize("stsservices")
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <li><a class="dropdown-item" href="#">@Localize("allwebsitessts")</a></li>
+                            <li><a class="dropdown-item" href="https://www.sti.gov.kg/">@Localize("officialwebsitests")</a></li>
+                            <li><a class="dropdown-item" href="https://stat.salyk.kg/">@Localize("opendata")</a></li>
+                            <li><a class="dropdown-item" href="https://cabinet.salyk.kg/account/login?ReturnUrl=%2F">@Localize("tpaccount")</a></li>
+                            <li><a class="dropdown-item" href="https://import.salyk.kg/">@Localize("consolidatedpost")</a></li>
+                            <li><a class="dropdown-item" href="https://esf.salyk.kg/esf/view/user/login.xhtml?faces-redirect=true">@Localize("electronicinvoice")</a></li>
+                            <li><a class="dropdown-item" href="https://vat.salyk.kg/">@Localize("vat")</a></li>
+                        </ul>
+                    </div>
+                    <button class="navbar-toggler navbar-dark " type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse navbar-dark" style=" color:#018A90" id="navbarSupportedContent">
+                        <div class="navlinksDiv">
+                        <ul class="navbar-nav navbarnavUl">
+                            <li class="nav-item">
+                                <a href="https://www.instagram.com/salyk_kg/" class="nav-link"><i class="bi bi-instagram fs-4 text-white"></i></a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://t.me/gnskg" class="nav-link"><i class="bi bi-telegram fs-4 text-white"></i></a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://www.facebook.com/salykKG/" class="nav-link"><i class="bi bi-facebook fs-4 text-white"></i></a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://www.youtube.com/channel/UCcgL1pBJA6WRGg4yLQ6lbpg" class="nav-link"><i class="bi bi-youtube fs-4 text-white"></i></a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link"><i class="bi bi-twitter fs-4 text-white"></i></a>
+                            </li>
+                            <li class="nav-item">
+                                    <a href="#" class="nav-link"> <i class="fab fa-tiktok fs-4 text-white"></i></a>
+                            </li>
+                            <li class="nav-item ">
+                                <span class="ml-1 border-0">
+                                    <form asp-action="ChangeLanguage" asp-controller="Home" method="post">
+                                    <input type="hidden" id="returnUrl" name="returnUrl" value="@returnUrl" />
+                                        <select class="text-right p-0"  style="border:none;background: transparent; margin-bottom: 10px;" id="culture"
+                                            name="culture"
+                                            class="form-control"
+                                            onchange="this.form.submit();"
+                                            asp-for="@requestCulture.RequestCulture.UICulture.Name">
+                                            <option value="@cultureItems[1].Value">Кыргызча</option>
+                                            <option value="@cultureItems[0].Value">Русский</option>
+                                            <option value="@cultureItems[2].Value">English</option>
+                                        </select>
+                                    </form>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="container navbarTitleMain mt-3" style="min-height: 100vh;">
+        <nav class="navbar navbar-expand-md">
+            <div class="row align-items-center">
+                <div class="col-1 d-none d-sm-none d-md-none d-lg-none d-xl-block">
+                    <a asp-action="Index" asp-controller="Home"><img class="img-fluid mainHerbLogoFront" src="~/images/mainlogo.png" /> </a>
+                </div>
+                <div class="col-11 pt-3">
+                    <div class="border-bottom">
+                        <div class="row align-items-center justify-content-between">
+                            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-8 "><a class="navbar-brand" asp-action="Index" asp-controller="Home"><h5 style="color:#018A90; white-space: pre-wrap; ">@Localize("logoname")</h5></a></div>
+                            <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-2 text-right p-0"><a class="navbar-brand"><h6><b><i class="bi bi-telephone" style="color:#018A90; margin-right: 5px;"></i><span style="font-size:15px;">@Localize("callcenter"): 116 </span></b></h6></a></div>
+                            <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-2 text-right p-0"><a class="navbar-brand"><h6><b><img src="~/images/login.png" style="margin-right: 5px;" /><span style="font-size:15px;">@Localize("myaccount")</span></b></h6></a></div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-between">
+                        <div class="col-xl-10 ">
+                            <div class="justify-content-start  mt-2">
+                                @await Component.InvokeAsync("Navs")
+                            </div>
+                        </div>
+                        <div class="col-xl-2 SearchText pe-0">
+                            <form asp-controller="Home" asp-action="SearchText" method="get" autocomplete="off">
+                            <div class="input-group mt-1">
+                                <input type="text" class="form-control input-group-text" placeholder="Поиск" name="SearchWord"/>
+                                <div class="input-group-append">
+                                    <span class=""><button class="btn btn-default" style="border-color: #e0d8d8; " type="submit"><i style="color:#018A90;" class="bi bi-search"></i> </button></span>
+                                </div>
+                            </div>
+                            </form>
+                        </div>                                        
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="container border-top mt-2">
+            @RenderSection("Styles", required: false)
+            @RenderBody()
+        </div>
+    </div>
+
+    <footer class="Footer" id="footer">
+        <div class="pt-4 pb-2" style="border-top: 1px solid #EEEEEE; background-color: #f8f8f8;">
+            <div class="container">
+                <div class="row pt-2">
+                    <div class="col-sm-4">
+                        <img src="~/images/Group.svg" class="img-fluid" style="width:60px; height:60px;" />
+                        <p class="font-weight-bold" style="font-size:14px;">@Localize("footerlogoname1") <br /> @Localize("footerlogoname2")</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <p><i class="bi bi-geo-alt pr-1" style="color: #018A90;"></i>@Localize("ouraddress")</p>
+                        <p><i class="bi bi-telephone pr-1" style="color: #018A90;"></i>@Localize("callcenter"): 116</p>
+                        <p><i class="bi bi-telephone-plus pr-1" style="color: #018A90;"></i>@Localize("hotline"): +996 (312) 12-34-56</p>
+                        <p><i class="bi bi-envelope pr-1" style="color: #018A90;"></i>E-mail: sti@sti.gov.kg</p>
+                    </div>
+                    <div class="col-sm-4">
+                        <p class="">@Localize("technicalsupport")</p>
+                        <p class=""><i class="bi bi-telephone pr-1" style="color: #018A90;"></i>@Localize("callcenter"): +996 508 996 669, <br /> +996 755 000 116, +996 997 000 116</p>
+                        <p class="">@Localize("sitedevelopedby"):  <img class="pl-2" src="~/images/salykIcon.png" /></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="background: url('../../images/Resourse.png') no-repeat; background-size: cover; background-position: center;" class="pb-0">
+            <div class="container text-center pt-2 pb-2">
+                <p class="pb-0 text-white">&copy; @yearOfWebsite @Localize("websiteStateTaxService"). @Localize("allrightsreserved")</p>
+            </div>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/font-awesome/js/fontawesome.js"></script>
+    <script src="~/lib/font-awesome/js/brands.js"></script>
+    <script type="text/javascript" src="~/js/lc_lightbox.lite.js"></script>
+    <script src="~/js/lightbox.min.js"></script>
+    <script src="~/lib/swiper/swiper-bundle.min.js"></script>
+    @await Component.InvokeAsync("Notyf")
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+<style>
+    body {
+        background-image: url('/images/background.png');
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 16px;
+    }
+    /**_________________HR________________________**/
+    hr{
+        margin: 0px;
+    }
+    /**_________________HR________________________**/
+    /**_________________Search________________________**/
+    .SearchText .input-group-append .btn {
+        height: 34px;
+        background: transparent;
+        border: solid 1px;
+        border-left: none;
+        border-color: #8080805e;
+        border-radius: 0;
+    }
+    .SearchText .input-group-text {
+        align-items: center;
+        padding: 0.375rem 0.75rem;
+        margin-bottom: 0;
+        font-size: 0.813rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #665c70;
+        text-align: center;
+    }
+    .input-group-append .btn {
+        height: 34px;
+        background: transparent;
+        border: solid 1px;
+        border-left: none;
+        border-color: gray;
+        border-radius: 0;
+    }
+    /**_________________Search________________________**/
+    /**_________________Навигационная панель с иконками________________________**/
+    .mainHerbLogoFront{
+        width:90px;
+        max-width:none;
+    }
+    .navbarHeaderTop .navbar {
+        padding: 0;
+        display: block;
+    }
+    .navbarTitleMain .navbar {
+        padding: 0;
+        display: block;
+    }
+     .navbar-nav {
+        font-size: 15px;
+        font-weight: 500;
+        color: #3b404f;
+        margin-left: auto;
+    }
+    .dropdown-toggle::after {
+        position: absolute;
+        top: calc(50% - 2px);
+    }
+    body {
+        background-image: url('/images/background.png');
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 16px;
+    }
+    .navbar{
+        padding:0;
+    }
+    .navbar-nav .nav-link {
+        display: inline-block;
+    }
+
+    .form-control {
+        background-color: transparent;
+        border-radius: 0;
+    }
+    .lang-navbar {
+        position: relative;
+    }
+
+    .navlinksDiv{
+        display:flex;
+        justify-content:end;
+        align-items: center;
+        background: #00848a;
+        height: 36px;
+    }
+    .navbarnavUl{
+        flex-direction: row;
+        align-items: center;
+        justify-content:end;        
+    }
+    .langnavbarUl{
+        background:white;
+    }
+
+    .navbar-collapse {
+        -ms-flex-preferred-size: 100%;
+        flex-basis: 100%;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
+        -ms-flex-align: center;
+        align-items: center;
+        background: transparent;
+        background-size: auto;
+        background-repeat: no-repeat;
+        overflow:inherit;
+        z-index: 999;
+        text-align: center;
+        justify-content: end;
+       
+    }
+    .langnavbarUl{
+        left: -80%;
+    }
+
+    .nav-item {
+        margin: 5px;
+    }
+
+    .SearchText a:hover{
+        text-decoration: underline;
+        text-decoration-color: #018A90;
+    }
+    /**_________________Навигационная панель с иконками________________________**/
+    /**_________________Раздел новости________________________**/
+    .NewsMainFeature {
+        border: none;
+        background-color: transparent;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .NewsMainFeature div {
+        margin: 10px 15px 15px 0;
+    }
+    /**_________________Раздел новости________________________**/
+    /**_________________Выпадающие окна в Типах лиц________________________**/
+    .dropbtn {
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+    .dropdown-menu a:hover{
+        text-decoration: underline;
+        text-decoration-color: #018A90;
+    }
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 500;
+        box-sizing: border-box;
+        /*height: 270px;*/
+        left: 0px;
+        background: white;
+    }
+
+    .dropdown-content a {
+        color: black;
+        padding: 5px 16px 5px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdown-content a:hover {
+        display: block;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+        z-index: 1;
+    }
+    .dropdown:hover .dropbtn {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0) 63.93%, #F4F7FC 105.35%);        
+    }
+    /**_________________Выпадающие окна в Типах лиц________________________**/
+    /**____________________________Заглавия_______________**/
+    .Headers {
+        color: #018A90;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+
+    .Link .card {
+        border-radius: 0;
+        padding: 15px;
+    }
+    /**____________________________Заглавия_______________**/
+    /**____________________________Функция при наведении реагирует и двигает DIVку по вертикали_______________**/
+    .baseBlock {
+        overflow: hidden;
+        background: #fff;
+        -moz-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        -o-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        box-shadow: 0 4px 20px 1px rgb(0 0 0 / 6%), 0 1px 4px rgb(0 0 0 / 8%);
+        border: 0;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .baseBlock:hover {
+        -webkit-transform: translate(0, -8px);
+        -moz-transform: translate(0, -8px);
+        -ms-transform: translate(0, -8px);
+        -o-transform: translate(0, -8px);
+        transform: translate(0, -8px);
+        box-shadow: 0 40px 40px rgba(0, 0, 0, 0.2);
+    }
+    /**__________Функция при наведении реагирует и двигает DIVку по вертикали_______________**/
+    /**__________Актуальные новости________**/
+    .contentt {
+        padding: 10px 15px;
+    }
+
+    .NewsActual {
+        border-left: 3px solid #018A90;
+        border-radius: 0;
+    }
+
+    .contentt p {
+        color: #018A90;
+    }
+
+    .contentt a {
+        color: black;
+    }
+
+    .cont {
+        padding-left: 0 0 0px 10px;
+        margin-bottom: 15px;
+    }
+    /**__________Актуальные новости________**/
+    /**__________Стиль на картинку слайдер новости________**/
+    .CarouselImage {
+        z-index: 1;
+    }
+
+    .carousel-caption {
+        position: absolute;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 10;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        color: #fff;
+        text-align: center;
+        opacity: 1;
+    }
+
+    .card .CarouselTitle a {
+        color: white;
+        opacity: 100%;
+    }
+
+    .card .CarouselTitle {
+        background-color: black;
+        opacity: 70%;
+    }
+
+    .carousel-indicators {
+        position: absolute;
+        top: 0;
+        left: auto;
+        margin: 15px 15px 0 0;
+        bottom: 10px;
+        display: flex;
+        padding-left: 0;
+        list-style: none;
+        z-index: 0;
+    }
+
+    .carousel img {
+        width: 857px; /* you can use % */
+        height: 504px;
+    }
+    /**__________Стиль на картинку слайдер новости________**/
+    /**__________Календарь________**/
+    .calendar {
+        height: 403px;
+    }
+    .calendar td {
+         padding: .1em .1em; 
+    }
+    .calendar thead td {
+            color: #018A90;
+        }
+    .calendar header .month {
+        padding: 20px;
+        margin: 0;
+    }
+    .calendarItem {
+        max-width: auto;
+    }
+
+    .calendar .day.has-event:after {
+        content: '';
+        position: absolute;
+        top: calc(20%);
+        left: calc(80% - 2px);
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #d71d50;
+    }
+
+    .calendar .day.today.has-event:after {
+        background: #d71d50;
+    }
+
+    .calendar .event-container {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        padding: 60px 30px;
+        background: #545A5C;
+        box-sizing: border-box;
+    }
+
+    .calendar header .btn-prev {
+        top: 20px;
+        left: 90px;
+        transform: rotate(-180deg);
+    }
+    .calendar header .btn-next {
+        top: 20px;
+        right: 90px;
+    }
+
+    .calendar header .simple-calendar-btn:hover {
+        background: none;
+        color: black;
+    }
+    .calendar header .simple-calendar-btn {
+        display: inline-block;
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        line-height: 30px;
+        color: black;
+        border-radius: 50%;
+        border: none;
+    }
+    .calendar header .simple-calendar-btn:before {
+        content: '';
+        position: absolute;
+        top: 9px;
+        left: 8px;
+        width: 12px;
+        height: 12px;
+        border-style: solid;
+        border-width: 3px 3px 0 0;
+        transform: rotate(45deg);
+        transform-origin: center center;
+    }
+
+    .calendar .day.today {
+        background: transparent;
+        color: #222020;
+        font-weight: bold;
+        position: relative;
+        display: inline-block;
+        width: 2.5em;
+        height: 2.5em;
+        line-height: 2.5em;
+        border-radius: 10%;
+        border: 1px solid #018A90;
+        cursor: pointer;
+    }
+    /**__________Календарь________**/
+    /* *__________Тип лица_________________**/
+    .cardItem {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0) 63.93%, #F4F7FC 105.35%);
+        font-style: normal;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 28px;
+        border-radius: 10px;
+        border: 0;
+        display: flex;
+        flex: 0 1 32%;
+        justify-content: space-between;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+    }
+
+
+    .cardItem:hover {
+        box-shadow: 0 4px 20px 1px rgb(0 0 0 / 6%), 0 1px 4px rgb(0 0 0 / 8%);
+    }
+    .cardItem .card-body{
+        padding: 0;
+    }
+    .cardItem .MainBlockLink{
+         font-size: 21px;
+    }
+    .menuimg1 {
+        width: 200px;
+        height: 140px;
+    }
+    .menuimg2 {
+        width: 110px;
+        height: 140px;
+    }
+    .menuimg3 {
+        width: 130px;
+        height: 140px;
+    }
+    /* *___________________Тип лица_________________**/
+    /*  *__________________Другие разделы_____________________**/
+    .OtherSections .card{
+        border-radius: 0;
+    }
+    /*  *__________________Другие разделы_____________________**/
+    /*  *__________________Адаптивность на разные ширины экрана_____________________**/
+    @@media screen and (min-width: 1440px)  {
+        .cardItem {
+            flex: 0 1 32%;
+        }
+
+            .cardItem .MainBlockLink {
+                font-size: 25px;
+            }
+
+        .Obrashenia {
+            min-height: 138px;
+        }
+
+        .PoleznyeSsylki {
+            min-height: 170px;
+        }
+
+        .dropdown-content {
+            min-width: 100%;
+        }
+    }
+    @@media screen and (min-width: 1024px) and (max-width: 1440px) {
+        .cardItem {
+            flex: 0 1 32%;
+        }
+
+        .cardItem .MainBlockLink {
+            font-size: 17px;
+        }
+        .Obrashenia {
+            min-height: 138px;
+        }
+         .PoleznyeSsylki{
+             min-height: 170px;
+         }
+
+        .dropdown-content {
+            min-width: 100%;
+        }
+    }
+
+     @@media screen and (max-width: 1200px) {
+        
+
+        .breackDownByYearMainDiv .breackDownByYear {
+            flex-wrap: wrap;
+        }
+        .breackDownByYearMainDiv .breackDownByYear .breackDownByYearFirstDiv{
+            max-width:135px;
+        }
+        .breackDownByYearMainDiv .breackDownByYear .breakYear{
+            max-width:60px;
+        }
+    }
+
+    @@media screen and (max-width: 1024px) {
+        .cardItem {
+            flex: 0 1 50%;
+        }
+        .cardItem .MainBlockLink {
+            font-size: 16px;
+        }
+        .Obrashenia {
+            min-height: 138px;
+        }
+
+        .Linked .card {
+            min-height: 94px;
+        }
+
+        .PoleznyeSsylki {
+            min-height: 170px;
+        }
+
+        .swiper-area .otherLinkPrevButton {
+            left: -30px;
+        }
+
+        .swiper-area .otherLinkNextButton {
+            right: -30px;
+        }
+
+        .dropdown-content {
+            min-width: 100%;
+        }
+
+        .breackDownByYearMainDiv .breackDownByYear {
+            flex-wrap: wrap;
+        }
+    }
+    /* On screens that are 992px or less, set the background color to blue */
+    @@media screen and (max-width: 992px) {
+        .cardItem {
+            flex: 0 1 auto;
+        }
+
+        .Obrashenia {
+            min-height: 154px;
+        }
+
+        .Linked .card {
+            min-height: 122px;
+        }
+
+        .swiper-area .otherLinkPrevButton {
+            left: -30px;
+        }
+
+        .swiper-area .otherLinkNextButton {
+            right: -30px;
+        }
+
+        .dropdown-content {
+            min-width: 100%;
+        }
+
+        .breackDownByYearMainDiv .breackDownByYear {
+            flex-wrap: wrap;
+        }
+    }
+
+    @@media screen and (max-width: 768px) {
+        .cardItem {
+           flex: 0 1 auto;
+        }
+        .PoleznyeSsylki {
+            min-height: 170px;
+        }
+        .Obrashenia {
+            min-height: 154px;
+        }
+
+        .Linked .card {
+            margin-top: 20px;
+            min-height: 110px;
+        }
+
+        .swiper-area .otherLinkPrevButton {
+            left: -30px;
+        }
+
+        .swiper-area .otherLinkNextButton {
+            right: -30px;
+        }
+
+        .dropdown-content {
+            min-width: 100%;
+        }
+
+        .breackDownByYearMainDiv .breackDownByYear {
+            flex-wrap: wrap;
+        }
+
+    }
+
+    @@media screen and (max-width: 600px) {
+        .PoleznyeSsylki {
+            min-height: 90px;
+        }
+
+        .swiper-area otherLinkPrevButton {
+            left: -20px;
+        }
+
+        .swiper-area otherLinkNextButton {
+            right: -20px;
+        }
+
+        .dropdown-content {
+            min-width: 100%;
+        }
+
+        .carousel img {
+            width: 857px;
+            height: 400px;
+        }
+
+        .breackDownByYearMainDiv .breackDownByYear {
+            flex-wrap: wrap;
+        }
+
+    }
+
+    @@media screen and (max-width: 425px) {
+        .PoleznyeSsylki {
+            min-height: 90px;
+        }
+        .Obrashenia {
+            min-height: 72px;
+        }
+
+        .dropdown-content {
+            min-width: 100%;
+        }
+
+        .carousel img {
+            width: 857px;
+            height: 400px;
+        }
+        .mySwiper2 .swiper-slide img {
+            display: block;
+            max-width: 100%;
+            height: 370px;
+        }
+
+        .breackDownByYearMainDiv .breackDownByYear {
+            flex-wrap: wrap;
+        }
+
+        .widthOfColum {
+            max-width: 60px;
+        }
+
+        .calendar header .btn-prev {
+            top: 20px;
+            left: 50px;
+            transform: rotate(-180deg);
+        }
+
+        .calendar header .btn-next {
+            top: 20px;
+            right: 50px;
+        }
+    }
+
+    @@media screen and (max-width: 375px) {
+        .PoleznyeSsylki {
+            min-height: 90px;
+        }
+        .dropdown-content {
+            min-width: 100%;
+        }
+
+        .Obrashenia {
+            min-height: 72px;
+        }
+
+        .carousel img {
+            width: 857px;
+            height: 400px;
+        }
+
+        .breackDownByYearMainDiv .breackDownByYear {
+            flex-wrap: wrap;
+        }
+        .widthOfColum{
+            max-width:50px;
+        }
+
+    }
+
+    @@media screen and (max-width: 320px) {        
+        .PoleznyeSsylki {
+            min-height: 120px;
+        }
+        .dropdown-content {
+            max-width: 100%;
+        }
+
+        .Obrashenia {
+            min-height: 72px;
+        }
+
+        .carousel img {
+            width: 857px;
+            height: 400px;
+        }
+        .breackDownByYearMainDiv .breackDownByYear {
+            flex-wrap: wrap;
+        }
+    }
+    /**____________________Адаптивность на разные ширины экрана_____________________**/
+    /**____________________Полезные ссылки______________________**/
+    .Linkimg {
+        width: 60px;
+        height: 60px;
+    }
+    .smartLink {
+        margin-right: 0;
+    }
+
+    .OtherLinkimg {
+        width: 110px;
+        height: 90px;
+    }
+
+    .usefulImg {
+        min-width: 50px;
+        max-width: 160px;
+        min-height: 50px;
+        max-height: 50px;
+        padding: 0 0 10px 0;
+        max-width: none;
+    }
+
+    .LinksBoxes {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .divColor-1 {
+        background-color: #eff6f6;
+    }
+
+    .divColor-2 {
+        background-color: #fff8ea;
+    }
+    /**___________________________Полезные ссылки______________________**/
+    /**___________________________Другие ссылки______________________**/
+    .carouselPrograms .carousel-inner .carousel-item-prev.carousel-item-right {
+        position: absolute;
+        top: 0;
+        left: 0%;
+        z-index: -1;
+        display: block;
+        visibility: visible;
+    }
+    .otherLinksSwiper {
+        height: 300px;
+    }
+
+    .swiper-area {
+        position: relative;
+    }
+
+    .swiper-wrapper {
+        overflow: visible;
+    }
+
+    .otherLinkPrevButton {
+        position: absolute;
+        top: 40%;
+        left: -50px;
+        width: 30px;
+        height: 10px;
+        margin-top: calc(0px - (var(--swiper-navigation-size)/ 2));
+        z-index: 10;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--swiper-navigation-color,var(--swiper-theme-color));
+    }
+
+    .otherLinkNextButton {
+        position: absolute;
+        top: 40%;
+        right: -50px;
+        width: 30px;
+        height: 10px;
+        margin-top: calc(0px - (var(--swiper-navigation-size)/ 2));
+        z-index: 10;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--swiper-navigation-color,var(--swiper-theme-color));
+    }
+
+    .swiper .swiper-slide .card {
+        width: 100%;
+        min-width: 150px;
+        height: 65%;
+        min-height: 200px;
+        border-radius: 0;
+    }
+
+    .swiper .swiper-slide .card p {
+        margin: 0 0 10px;
+    }
+
+    .swiper .swiper-slide .card img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .swiper .swiper-slide .card h5 {
+        font-size: 14px;
+        margin: 0 0 0;
+        min-height: 40px;
+    }
+    /**___________________________Другие ссылки______________________**/
+    .baseBlockImage {
+        overflow: hidden;
+        -moz-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        -o-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        box-shadow: 0 4px 20px 1px rgb(0 0 0 / 6%), 0 1px 4px rgb(0 0 0 / 8%);
+        border: 0;
+        position: relative;
+    }
+
+    .baseBlockImage:hover {
+        -webkit-transform: translate(0, -8px);
+        -moz-transform: translate(0, -8px);
+        -ms-transform: translate(0, -8px);
+        -o-transform: translate(0, -8px);
+        transform: translate(0, -8px);
+    }
+    
+</style>
+<script>
+</script>
+

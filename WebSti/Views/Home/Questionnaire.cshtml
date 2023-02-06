@@ -1,0 +1,355 @@
+﻿@model CreateQuestionnaireCommand
+
+<div class="mt-2 mb-5">
+    <div class="col-md-12" style="height: 100%;" >
+        <div class="wip mt-5 mb-5 text-center" >
+            <h2>Уважаемые налогоплательщики для улучшения качества предоставления услуг налогоплательщикам просим заполнить опросник по предоставленным услугам при обращении в территориальный УГНС.
+            При этом, отмечаем, что опросник производится анонимно.
+            </h2>
+            <hr/>
+            <div class="questionnaire" style="margin: 3vh;" >
+                <form method="post" asp-controller="Home" asp-action="Questionnaire">
+                    <div class="first question form-group" id="first-question"> 
+                        <h4 class="question-text">1 Выберите услугу, за которой Вы обращались в территориальный УГНС</></h4>
+                        <ul class="sub-dropdown" id="sub-dropdown"  style="text-align: left;">
+                            <li class="cell"><label><input type="radio" name="Services" class="option-input radio"  asp-for="@Model.Services" value="@Service.TaxOrAccountingRegistration" />@Service.TaxOrAccountingRegistration.GetDescriptionValue()</label></li>
+                            <li class="cell">
+                                <input id="1" class="drop-down option-input radio " type="checkbox"  value="Получение справок и иных документов по запросам" /><label for="1">Получение справок и иных документов по запросам</label>
+                                <ul id="additional" class="additional"> 
+                                    <li><label><input type="radio" name="Services" class="option-input radio" asp-for="@Model.Services" value="@Service.OpenCurrentAccount" />@Service.OpenCurrentAccount.GetDescriptionValue()</label></li>
+                                    <li><label><input type="radio" name="Services" class="option-input radio" asp-for="@Model.Services" value="@Service.ImportingGoodsFromTheEAEU" />@Service.ImportingGoodsFromTheEAEU.GetDescriptionValue()</label></li>
+                                    <li><label><input type="radio" name="Services" class="option-input radio" asp-for="@Model.Services" value="@Service.AboutNotDebt" />@Service.AboutNotDebt.GetDescriptionValue()</label></li>
+                                </ul>
+                            </li>
+                            <li class="cell"><label><input type="radio" name="Services" class="option-input radio " asp-for="@Model.Services" value="@Service.GettingPatent" />@Service.GettingPatent.GetDescriptionValue()</label></li>
+                            <li class="cell"><label><input type="radio" name="Services" class="option-input radio "  asp-for="@Model.Services" value="@Service.SubmissionTax" />@Service.SubmissionTax.GetDescriptionValue()</label></li>
+                            <li class="cell"><input type="radio" id="2"  class="comment-question option-input radio " value="1" /><label for="2">Прочее</label><textarea class="comment" asp-for="ServicesComment" name="ServicesComment"   ></textarea><br />  </li>
+                        </ul>                 
+                     </div>       
+                    <div class="question">
+                         <h4 class="question-text">2 Укажите дату Вашего обращения за налоговой услугой</h4>
+                         <input class="datepicker" type="date" asp-for="DateApplication"/>
+                     </div>
+                    <div class="question">
+                        <h4 class="question-text">3 Выберите территориальный УГНС, где получили услугу</h4>
+                        <div class="select">
+                             <select asp-for="@Model.Rayoncode" asp-items="(SelectList)@ViewData["rayons"]">
+                                <option value="">Выбрать район</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class ="question">
+                        <h4 class="question-text">4 Способ обращения</h4>
+                        <ul  style="text-align: left;">
+                            <li class="btn-cell first">
+                                <input asp-for="WayOfAddress" id="first-sub-cell" type="radio" class="option-input radio" value="@WayOfAddress.PersonallyToUGNS" /><label for="first-sub-cell">@WayOfAddress.PersonallyToUGNS.GetDescriptionValue()</label>
+                                <ul class="first-additional" style="margin: 35px ;">
+                                    <h5> 1 Как долго пришлось ожидать?</h5>
+                                    <ul>
+                                        <li><label><input  asp-for="HowLongToWait" type="radio" class="option-input radio second-sub-question" value="@WaitingTime.NoQueue" />@WaitingTime.NoQueue.GetDescriptionValue()</label></li>
+                                        <li><label><input asp-for="HowLongToWait" type="radio" class="option-input radio second-sub-question" value="@WaitingTime.UpTo15Min" />@WaitingTime.UpTo15Min.GetDescriptionValue()</label></li>
+                                        <li><label><input asp-for="HowLongToWait" type="radio" class="option-input radio second-sub-question" value="@WaitingTime.MoreThan25" />@WaitingTime.MoreThan25.GetDescriptionValue()</label></li>
+                                    </ul>
+                                    <h5> 2 Услуга предоставлена в полном объеме?</h5>
+                                    <ul>
+                                        <li><label><input asp-for="ServiceProvidedInFull" type="radio" class="option-input radio second-sub-question" value="@Answer.Yes" />@Answer.Yes.GetDescriptionValue()</label></li>
+                                        <li><label><input  asp-for="ServiceProvidedInFull" type="radio" class="option-input radio second-sub-question" value="@Answer.No" />@Answer.No.GetDescriptionValue()</label></li>
+                                    </ul>
+                                    <h5> 3 Оцените комфортность места оказания услуг</h5>
+                                    <ul>
+                                        <li><label><input asp-for="ComfortPlaceOfService" type="radio" class="option-input radio second-sub-question" value="@Estimation.Comfortable" />@Estimation.Comfortable.GetDescriptionValue()</label></li>
+                                        <li><label><input  asp-for="ComfortPlaceOfService" type="radio" class="option-input radio second-sub-question" value="@Estimation.Satisfactory" />@Estimation.Satisfactory.GetDescriptionValue()</label></li>
+                                        <li><label><input  asp-for="ComfortPlaceOfService" type="radio" class="option-input radio second-sub-question" value="@Estimation.Unsatisfactory" />@Estimation.Unsatisfactory.GetDescriptionValue()</label></li>
+                                    </ul>
+                                      <h5>4 Оцените сроки предоставления услуги</h5>
+                                    <ul>
+                                        <li><label><input  asp-for="TermsOfServiceProvision" type="radio" class="option-input radio second-sub-question" value="@Answer.ServiceProvidedOnTime" />@Answer.ServiceProvidedOnTime.GetDescriptionValue()</label></li>
+                                        <li><label><input asp-for="TermsOfServiceProvision" type="radio" class="option-input radio second-sub-question" value="@Answer.ServiceDontProvidedOnTime" />@Answer.ServiceDontProvidedOnTime.GetDescriptionValue()</label></li>
+                                    </ul>
+                                    <h5>5 Оцените компетенцию сотрудников</h5>
+                                    <ul>
+                                        <li><label><input asp-for="CompetenceOfEmployees" type="radio" class="option-input radio second-sub-question" value="@Estimation.Competent" />@Estimation.Competent.GetDescriptionValue()</label></li>
+                                        <li><label><input asp-for="CompetenceOfEmployees" type="radio" class="option-input radio second-sub-question" value="@Estimation.Incompetent" />@Estimation.Incompetent.GetDescriptionValue()</label></li>
+                                    </ul>
+                                    <h5>6 Предложения и замечания на работу территориального УГНС</h5>
+                                    <ul>
+                                        <textarea asp-for="SuggestionsAndCommentsWorkUGNS"></textarea>
+                                    </ul>
+                                    <h5>7 Дайте общую оценку работы</h5>
+                                    <ul>
+                                        <li><label><input asp-for="OverallAssessmentOfWork" type="radio" class="option-input radio second-sub-question" value="@Estimation.Excellent" />@Estimation.Excellent.GetDescriptionValue()</label></li>
+                                        <li><label><input asp-for="OverallAssessmentOfWork" type="radio" class="option-input radio second-sub-question" value="@Estimation.Good" />@Estimation.Good.GetDescriptionValue()</label></li>
+                                        <li><label><input asp-for="OverallAssessmentOfWork" type="radio" class="option-input radio second-sub-question" value="@Estimation.Satisfactory" />@Estimation.Satisfactory.GetDescriptionValue()</label></li>
+                                        <li><label><input asp-for="OverallAssessmentOfWork" type="radio" class="option-input radio second-sub-question" value="@Estimation.Unsatisfactory" />@Estimation.Unsatisfactory.GetDescriptionValue()</label></li>
+                                    </ul>
+                                </ul>
+                            </li>
+                            <li class="btn-cell second">
+                                <input asp-for="WayOfAddress" id="second-sub-cell" type="radio" class="option-input radio" value="@WayOfAddress.ByPhoneToUGNS" /> <label for="second-sub-cell">@WayOfAddress.ByPhoneToUGNS.GetDescriptionValue()</label>
+                                
+                                <ul class="second-additional" style="margin: 35px;">
+                                    <h5>1 Как долго пришлось ожидать ответа?</h5>
+                                    <ul>
+                                        <li><label><input  asp-for="HowLongToWaitAnswer" type="radio"  class="option-input radio second-sub-question" value="@WaitingTime.LessThan2Min" />@WaitingTime.LessThan2Min.GetDescriptionValue()</label></li>
+                                        <li><label><input asp-for="HowLongToWaitAnswer" type="radio" class="option-input radio second-sub-question" value="@WaitingTime.MoreThan7Min" />@WaitingTime.MoreThan7Min.GetDescriptionValue()</label></li>
+                                        <li><label><input asp-for="HowLongToWaitAnswer" type="radio" class="option-input radio second-sub-question" value="@WaitingTime.DidntAnswer" />@WaitingTime.DidntAnswer.GetDescriptionValue()</label></li>
+                                    </ul>
+                                    <h5>2 Номер телефона по которому получили консультацию</h5>
+                                    <input type="number" asp-for="PhoneNumberConsultaion"  />
+                                    <h5>Дайте общую оценку полученной консультации</h5>
+                                    <ul>
+                                        <li><label><input asp-for="PhoneNumberConsultationGrade" type="radio" class="option-input radio second-sub-question" value="@Estimation.Excellent" />@Estimation.Excellent.GetDescriptionValue()</label></li>
+                                        <li><label><input asp-for="PhoneNumberConsultationGrade" type="radio" class="option-input radio second-sub-question" value="@Estimation.Good" />@Estimation.Good.GetDescriptionValue()</label></li>
+                                        <li><label><input asp-for="PhoneNumberConsultationGrade" type="radio" class="option-input radio second-sub-question" value="@Estimation.Satisfactory" />@Estimation.Satisfactory.GetDescriptionValue()</label></li>
+                                        <li><label><input asp-for="PhoneNumberConsultationGrade" type="radio" class="option-input radio second-sub-question" value="@Estimation.Unsatisfactory" />@Estimation.Unsatisfactory.GetDescriptionValue()</label></li>
+                                    </ul>
+                                    <h5>3 Предложения и замечания на работу территориального УГНС или подразделения</h5>
+                                    <textarea asp-for="SuggestionsAndCommentsWorkUGNSOrDivision"></textarea>
+                                </ul>
+                            </li>
+                            <li class="btn-cell third">
+                                <input id="third-sub-cell" type="radio" class="option-input radio " asp-for="WayOfAddress" value="@WayOfAddress.ThroughTheElectronicServices" /> <label for="third-sub-cell">@WayOfAddress.ThroughTheElectronicServices.GetDescriptionValue()</label>
+                                <ul class="third-additional" style="margin: 35px;">
+                                    <h5>1 Выберите сервис, к которому Вы обращались</h5>
+                                    <ul>
+                                        <li><label><input  asp-for="ServiceRequested" type="radio" class="option-input radio second-sub-question" value="@Answer.TaxpayerPersonalAccount" />@Answer.TaxpayerPersonalAccount.GetDescriptionValue()</label></li>
+                                        <li><label><input  asp-for="ServiceRequested" type="radio" class="option-input radio second-sub-question"  value="@Answer.OfficalWebSiteSTI" />@Answer.OfficalWebSiteSTI.GetDescriptionValue()</label></li>
+                                        <li><label><input  asp-for="ServiceRequested" type="radio" class="option-input radio second-sub-question" value="@Answer.ElectronicPatent" />@Answer.ElectronicPatent.GetDescriptionValue()</label></li>
+                                        <li><label><input  asp-for="ServiceRequested" type="radio" class="option-input radio second-sub-question" value="@Answer.ElectronicInvoice" />@Answer.ElectronicInvoice.GetDescriptionValue()</label></li>
+                                        <li><label><input asp-for="ServiceRequested" type="radio" class="option-input radio second-sub-question" value="@Answer.ElectronicBillOfLading" />@Answer.ElectronicBillOfLading.GetDescriptionValue()</label></li>
+                                        <li><label><input  asp-for="ServiceRequested" type="radio" class="option-input radio second-sub-question" value="@Answer.CalculationOfPropertyTax" />@Answer.CalculationOfPropertyTax.GetDescriptionValue()</label></li>
+                                        <li><label><input  asp-for="ServiceRequested" type="radio" class="option-input radio second-sub-question" value="@Answer.AssistantFormSTI161" />@Answer.AssistantFormSTI161.GetDescriptionValue()</label></li>
+                                        <li><input type="radio" id="comment-fourth-question" class="comment-question option-input radio " /><label for="comment-fourth-question">Прочее</label><textarea class="comment" id="sub-first-question" asp-for="ServiceRequestedComment"></textarea><br />  </li>
+                                    </ul>
+                                    <h5>2 Ваш вопрос решен?</h5>
+                                    <ul>
+                                        <li><label><input  asp-for="IssueResolved" type="radio" class="option-input radio second-sub-question" value="@Answer.Yes" />@Answer.Yes.GetDescriptionValue()</label></li>
+                                        <li><label><input  asp-for="IssueResolved" type="radio" class="option-input radio second-sub-question" value="@Answer.No" />@Answer.No.GetDescriptionValue()</label></li>
+                                    </ul>
+                                    <h5>3 Возникли ли у Вас трудности при работе с сервисом?</h5>
+                                    <ul>
+                                        <li><label><input  asp-for="DifficultiesWithService" type="radio" class="option-input radio second-sub-question" value="@Answer.Yes" />@Answer.Yes.GetDescriptionValue()</label></li>
+                                        <li><label><input  asp-for="DifficultiesWithService" type="radio" class="option-input radio second-sub-question" value="@Answer.No" />@Answer.No.GetDescriptionValue()</label></li>
+                                        <li><input type="radio" id="comment-fourth-question" class="comment-question option-input radio " value="" /><label for="comment-fourth-question">Другой вариант ответа</label><textarea class="comment" id="sub-first-question" asp-for="DifficultiesWithServiceComment"></textarea><br />  </li> 
+                                    </ul>
+                                    <h5>4 Какие улучшения вы бы внесли в работу сервиса?</h5>
+                                    <textarea asp-for="SuggestionImprovement"></textarea>
+                                    <h5>5 Дайте общую оценку работы</h5>
+                                    <ul>
+                                        <li><label><input  asp-for="OverallAssessmentOfWork" type="radio" class="option-input radio second-sub-question" value="@Estimation.Excellent" />@Estimation.Excellent.GetDescriptionValue()</label></li>
+                                        <li><label><input  asp-for="OverallAssessmentOfWork" type="radio" class="option-input radio second-sub-question" value="@Estimation.Good" />@Estimation.Good.GetDescriptionValue()</label></li>
+                                        <li><label><input asp-for="OverallAssessmentOfWork" type="radio" class="option-input radio second-sub-question" value="@Estimation.Satisfactory" />@Estimation.Satisfactory.GetDescriptionValue()</label></li>
+                                        <li><label><input asp-for="OverallAssessmentOfWork" type="radio" class="option-input radio second-sub-question" value="@Estimation.Unsatisfactory" />@Estimation.Unsatisfactory.GetDescriptionValue()</label></li>
+                                    </ul>
+                                </ul>
+                            </li>    
+                        </ul>
+                    </div>
+                    <input type="submit" class="btn btn-primary btn-block" asp-controller="Home" asp-action="Questionnaire"/> 
+                </form>
+            </div>
+        </div>
+    </div>
+</div>   
+<style>
+input[type="date"]{
+  
+    background-color: #00868d;
+    color: white;
+    width: 15em;
+    height: 3em;
+    font-size: 20px;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.label{
+   font-size: 40px; 
+}
+.question-text{
+  
+   
+   text-align: left;
+}
+.question {
+    min-height: 20vh;
+    text-align: left;
+}
+.question ul li{
+      list-style-type: none;
+      margin: 3vh;
+}
+.additional{
+    display: none;
+}
+.drop-down:checked ~ .additional {
+    display: block;
+}
+.comment{
+    display: none;
+}
+.comment-question:checked ~ .comment {
+     display: block;
+}
+.fourth-question{
+    margin: 10px;
+}
+/*????????????????????????????????????????*/
+.first-additional {
+    display: none;
+}
+#first-sub-cell:checked ~ .first-additional {
+     display: block;
+}
+.second-additional {
+    display: none;
+}
+#second-sub-cell:checked ~ .second-additional {
+    display: block;
+}
+.third-additional {
+    display: none;
+}
+#third-sub-cell:checked ~ .third-additional {
+    display: block;
+}
+/*????????????????????????????????????????*/
+.option-input {
+      
+      -webkit-appearance: none;
+      -moz-appearance: none;
+    
+      appearance: none;
+      position: relative;
+      top: 13.33333px;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 20px;
+      width: 20px;
+      transition: all 0.15s ease-out 0s;
+      background: #cbd1d8;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      display: inline-block;
+      margin-right: 0.5rem;
+      outline: none;
+      position: relative;
+      z-index: 1000;
+    }
+.option-input:hover {
+      background: #9faab7;
+    }
+.option-input:checked {
+      background: #00a9b2;
+    }
+.option-input:checked::before {
+      width: 19px;
+      height: 19px;
+      display:flex;
+      content: '✔';
+      font-size: 20px;
+      font-weight:bold;
+      position: absolute;
+      align-items:center;
+      justify-content:center;
+      font-family:'Font Awesome 5 Free';
+}
+.option-input:checked::after {
+      -webkit-animation: click-wave 0.65s;
+      -moz-animation: click-wave 0.65s;
+      animation: click-wave 0.65s;
+      background: #40e0d0;
+      content: '';
+      display: block;
+      position: relative;
+      z-index: 100;
+}
+.option-input.radio {
+      border-radius: 50%;
+}
+.option-input.radio::after {
+        border-radius: 50%;
+}
+select {
+   -webkit-appearance:none;
+   -moz-appearance:none;
+   -ms-appearance:none;
+   appearance:none;
+   outline:0;
+   box-shadow:none;
+   border:0!important;
+   background: #00868d;
+   background-image: none;
+   flex: 1;
+   padding: 0 .5em;
+   color:#fff;
+   cursor:pointer;
+   font-size: 1em;
+   font-family: 'Open Sans', sans-serif;
+}
+select::-ms-expand {
+   display: none;
+}
+.select {
+   position: relative;
+   display: flex;
+   width: 40em;
+   height: 3em;
+   line-height: 3;
+   background: #5c6664;
+   overflow: hidden;
+   border-radius: .25em;
+}
+.select::after {
+   content: '\25BC';
+   position: absolute;
+   top: 0;
+   right: 0;
+   padding: 0 1em;
+   background: #007f85;
+   cursor:pointer;
+   pointer-events:none;
+   transition:.25s all ease;
+}
+.select:hover::after {
+   color: #00b4bd;
+}
+
+
+</style>
+<script>
+    var btn = document.querySelectorAll('.cell');
+    const sd = document.getElementById("sub-dropdown");
+    const sdd = document.getElementById("first-question");
+    var radio = document.querySelectorAll('.btn-cell');
+    for (var i = 0; i < radio.length; i++)
+        radio[i].onclick = function (e) {
+            
+                for (dddd of radio) {
+                    dddd.style.display = 'none'
+                }
+                this.style.display = 'block';
+           
+        }
+    for(var i = 0; i < btn.length; i++)
+        btn[i].onclick = function (e) {
+            if (getComputedStyle(btn[1]).display == 'block' || getComputedStyle(btn[4]).display == 'block' || getComputedStyle(btn[3]).display == 'block' || getComputedStyle(btn[2]).display == 'block') {
+            for (dddd of btn) {
+                dddd.style.display = 'none'
+            }
+            this.style.display = 'block';
+            }
+            else{
+                for (dddd of btn) {
+                dddd.style.display = 'block'
+                }
+            }
+        }
+        //btn[i].onclick = function (e) { if(sd.style.display === 'block'){sd.style.display = 'none' ,  sdd.insertAdjacentElement('afterend', this )}else{ sd.style.display = 'block' }  };
+        
+     
+    
+</script>

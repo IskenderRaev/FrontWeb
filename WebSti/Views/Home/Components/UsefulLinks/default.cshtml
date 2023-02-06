@@ -1,0 +1,57 @@
+﻿@model IList<LinkCommandDto>
+
+
+<h3 class="Headers pb-2">@Localize("usefulreferences")</h3>
+<hr />
+<div class="container TotalLinks px-0">
+    <div class="row justify-content-start LinksBoxes mt-3 ">
+        @for (var i = 0; i < Model.Count; i++)
+        {
+            @if (i == 0 || i % 2 == 0)
+            {
+                <div class="col-sm-6 col-md-4 pt-2 Link ">
+                    <div class="PoleznyeSsylki d-flex">
+                        <div class="baseBlock divColor-1 card-body flex-fill">
+                            <div class="Links row align-items-center">
+                                <div class="col-sm-8">
+                                    <div class="col-3 col-sm-4 col-lg-4 p-0 ">
+                                        <img class="usefulImg" src="~/stsStorage/@Model[i].AdditionalImagePath" alt="Alternate Text" />
+                                    </div>
+                                    <div class="smartLink">
+                                        <a class="font-weight-bold text-center text-primary m-0 smartLink" href="@Model[i].LinkSource">@Model[i].Title</a>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 p-0 d-none d-xl-block">
+                                    <img class="OtherLinkimg" src="~/stsStorage/@Model[i].MainImagePath" alt="Alternate Text" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else if (i % 2 != 0)
+            {
+                <div class="col-sm-6 col-md-4 pt-2 Link ">
+                    <div class="PoleznyeSsylki d-flex">
+                        <div class="baseBlock divColor-2 card-body flex-fill">
+                            <div class="Links row align-items-center">
+                                <div class="col-sm-8">
+                                    <div class="col-3 col-sm-4 col-lg-4 p-0 ">
+                                        <img class="usefulImg" src="~/stsStorage/@Model[i].AdditionalImagePath" alt="Alternate Text" />
+                                    </div>
+                                    <div class="smartLink">
+                                        <a class="font-weight-bold text-center text-primary m-0 smartLink" href="@Model[i].LinkSource">@Model[i].Title</a>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 p-0 d-none d-xl-block">
+                                    <img class="OtherLinkimg" src="~/stsStorage/@Model[i].MainImagePath" alt="Alternate Text" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            
+        }
+    </div>
+</div>

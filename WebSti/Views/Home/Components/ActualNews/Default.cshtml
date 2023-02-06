@@ -1,0 +1,13 @@
+﻿@model IList<ActualNewsCommandDto>
+
+<div class="card NewsActual  mt-3">
+    @foreach (var item in Model.OrderByDescending(x => x.PublishDate))
+    {
+        <div class="contentt card-body h-100">
+            <div class="">
+                <p class="small m-0 "><i class="bi bi-clock" style="color: #018A90; padding-right: 5px;"></i>@item.PublishDate.ToString("dd MMMM")</p>
+                <a asp-controller="News" asp-action="Details" asp-route-id="@item.Id">@item.Title</a>
+            </div>
+        </div>        
+    }   
+</div>

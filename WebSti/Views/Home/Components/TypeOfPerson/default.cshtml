@@ -1,0 +1,71 @@
+﻿@model IList<SubsectionDto>
+
+<div class="container mt-5">
+    <div class="text-primary">       
+        <div class=" row justify-content-between wrapper">
+             @foreach (var item in Model.OrderBy(x => x.Id))
+            {
+                @if (item.Title == "Физические лица" || item.Title == "Жеке жак" || item.Title == "Individuals")
+            {
+                    <div class="col-md-6 col-lg-4 cardItem p-0" style="border-radius: 0;">
+                        <div class="dropdown">
+                            <div class="card-body dropbtn">
+                                <div class="row align-items-center">
+                                    <div class="col-5 col-sm-5 pe-0 pt-1">
+                                        <img class="menuimg1" src="~/images/menu_2_31.png" />
+                                    </div>
+                                    <div class="col-7  col-sm-7">
+                                        <a asp-action="Index" asp-controller="Section" asp-route-subsectionId="@item.Id" asp-route-sectionType="@((int)SectionType.LeftNav)" class="MainBlockLink  text-left text-primary m-0">@item.Title</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dropdown-content col-auto">
+                                @await Component.InvokeAsync("ThemeForTypeOfPerson", @item.Id)
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if (item.Title == "Индивидуальные предприниматели" || item.Title == "Жеке ишкерлер үчүн" || item.Title == "Individual persons")
+                {
+                    <div class="col-md-6 col-lg-4 cardItem p-0" style="border-radius: 0">
+                        <div class="dropdown">
+                            <div class="card-body dropbtn">
+                                <div class="row align-items-center">
+                                    <div class="col-5 col-sm-5 pe-0">
+                                        <img class="menuimg2" src="~/images/menu_2_1.png" />
+                                    </div>
+                                    <div class="col-7 col-sm-7">
+                                        <a asp-action="Index" asp-controller="Section" asp-route-subsectionId="@item.Id" asp-route-sectionType="@((int)SectionType.LeftNav)" class="MainBlockLink  text-left text-primary m-0">@item.Title</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dropdown-content col-auto">
+                                @await Component.InvokeAsync("ThemeForTypeOfPerson", @item.Id)
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if (item.Title == "Юридические лица" || item.Title == "Юридикалык жак" || item.Title == "Legal entities")
+                {     
+                    <div class="col-md-6 col-lg-4 cardItem p-0" style="border-radius: 0;">
+                        <div class="dropdown">
+                            <div class="card-body dropbtn ">
+                                <div class="row align-items-center">
+                                    <div class="col-5 col-sm-5 pe-0">
+                                        <img class="menuimg3" src="~/images/menu_2_2.png" />
+                                    </div>
+                                    <div class="col-7 col-sm-7">
+                                        <a asp-action="Index" asp-controller="Section" asp-route-subsectionId="@item.Id" asp-route-sectionType="@((int)SectionType.LeftNav)" class="MainBlockLink  text-left text-primary m-0">@item.Title</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dropdown-content col-auto">
+                                @await Component.InvokeAsync("ThemeForTypeOfPerson", @item.Id)
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

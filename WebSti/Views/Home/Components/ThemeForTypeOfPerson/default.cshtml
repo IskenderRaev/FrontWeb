@@ -1,0 +1,37 @@
+﻿@model List<ThemeDto>
+
+@foreach (var item in Model.OrderBy(x=>x.ThemeOrder))
+{
+    <a asp-action="Index" 
+        asp-controller="Section" 
+        asp-route-subsectionId="@item.SubsectionId" 
+        asp-route-themeId="@item.Id" 
+        asp-route-sectionType="@((int)SectionType.Nav)"
+   class=" text-left text-primary m-0 btnA" style="font-family: iconsmind">
+        <span class="letter">@Html.Raw(@item.ThemeIcon)</span>
+        <span class="btnAlink">@item.Title </span>
+    </a>
+}
+<a asp-action="Index"
+   asp-controller="Section"
+   asp-route-subsectionId="@Model[0].SubsectionId"
+   asp-route-sectionType="@((int)SectionType.LeftNav)"
+   class=" text-left text-primary m-0 btnA" style="font-family: iconsmind">
+    <span class="letter"><i class="bi bi-arrow-right"></i></span>
+    <span class="btnAlink">@Localize("moredetails") </span>
+</a>
+<style>
+    .letter {
+        color: #018A90; 
+    }
+    .btnA {
+      transition: transform 250ms;
+    }
+
+    .btnA:hover {
+        transform: translateX(20px);
+    }
+    .btnAlink:hover {      
+      text-decoration: underline;
+    }
+</style> 

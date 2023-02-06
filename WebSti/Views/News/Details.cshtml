@@ -1,0 +1,253 @@
+﻿@model NewsCommandDto
+
+@{
+    ViewData["Title"] = "Новости";
+}
+<link href="~/css/grid-images.css" rel="stylesheet" />
+
+<div class="row">
+    <div class="col-md-2">
+        <h2 class="mt-5">
+            <b>Новости</b>
+        </h2>
+        <div class="card NewsMainFeature">
+            <div class="border-bottom">
+                <a asp-action="Index">@Localize("news")</a>
+            </div>
+            <div class="border-bottom">
+                <a asp-action="Index" asp-route-NewsState=@NewsState.IsActual>@Localize("сurrentnews")</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8 mt-3 my-5">
+        <h2 class="mb-3"><b>@Model.Title</b></h2>
+        <p class="main-text info-text-type mb-4">
+            <span class="text-muted mr-2">@Model.PublishDate.ToString("dd-MMMM-yyyy HHHH:mm")</span>
+        </p>
+        <hr class="my-2"/>
+        <p class="text-justify">
+            @Html.Raw(Model.LongDescription)
+        </p>
+        <br />
+        <h4 class="font-weight-700 text-right mb-5 ">Пресс-служба ГНС</h4>
+        <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper mySwiper2">
+            <div class="swiper-wrapper">
+                @foreach (var item in Model.ImagePaths)
+                {
+                    <div class="swiper-slide">
+                        <img src="~/stsStorage/@item" alt="Alternate Text" />
+                    </div> 
+                }
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-next newsNextButton"></div>
+            <div class="swiper-button-prev newsPrevButton"></div>
+        </div>
+        <div thumbsSlider="" class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                @foreach (var item in Model.ImagePaths)
+                {
+                    <div class="swiper-slide">
+                        <img src="~/stsStorage/@item" alt="Alternate Text" />
+                    </div>
+                }
+            </div>
+        </div> 
+        <p>
+            <span style="">
+                Мы в соцсети:&nbsp;&nbsp;<a href="https://www.facebook.com/salykKG" target="_blank" rel="noopener noreferrer">Facebook</a>,
+                &nbsp;<a href="https://twitter.com/salyk_kg" target="_blank" rel="noopener noreferrer">Twitter</a>,
+                &nbsp;<a href="https://www.instagram.com/salyk_kg/" target="_blank" rel="noopener noreferrer">Instagram</a>,
+                &nbsp;<a href="https://t.me/gnskg" target="_blank" rel="noopener noreferrer">Telegram</a>,
+                &nbsp;<a href="https://g.page/salyk_kg/review?gm" target="_blank" rel="noopener noreferrer">Google</a>,
+                &nbsp;<a href="https://www.youtube.com/channel/UCcgL1pBJA6WRGg4yLQ6lbpg/videos" target="_blank" rel="noopener noreferrer">Youtube</a>
+            </span>
+        </p>
+        <div class="row VseNovostiLink">
+            <div class="col-2 VseNovostiLink">
+                <a asp-action="Index" class="VseNovosti">Все новости</a>
+            </div>
+            <div class="col-10">   
+                <ul class="bottomUl">
+                    <li class="social-share facebook" title="Share on Facebook"><a><i class="bi bi-facebook fs-4"></i></a></li>
+                    <li class="social-share twitter" title="Tweet this"><a><i class="bi bi-twitter fs-4"></i></a></li>
+                </ul>
+            </div>            
+        </div>
+    </div>    
+</div>
+@section Styles {
+    <style>
+        body {
+            background: #000;
+            color: #000;
+        }
+        body {
+            background: #eee;
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            color: #000;
+            margin: 0;
+            padding: 0;
+        }
+
+        .bottomUl {
+            color: #018A90;
+            list-style-type: none;
+            margin: 20px 0 20px 0;
+            padding: 0;
+            display: flex;
+            justify-content: end;
+            vertical-align:bottom;
+        }
+        .bottomUl li{
+            padding-left: 10px;
+        }
+        .mySwiper2 {
+            width: auto;
+            height: auto;
+        }
+
+        .mySwiper2 .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            background: #fff;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+
+        .mySwiper2 .swiper-slide img {
+            display: block;
+            width: auto;
+            height: 466px;
+        }
+
+
+        .mySwiper .swiper {
+            width: 100%;
+            height: auto;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .mySwiper2 .swiper-slide {
+            background-size: cover;
+            background-position: center;
+        }
+              
+
+        .mySwiper {
+            height: 20%;
+            box-sizing: border-box;
+            padding: 10px 0;
+        }
+
+        .mySwiper .swiper-slide {
+            width: 25%;
+            height: 50%;
+            opacity: 0.4;
+        }
+
+        .mySwiper .swiper-slide-thumb-active {
+            opacity: 1;
+        }
+
+        .mySwiper  .swiper-slide img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .swiper-pagination{
+            background-color: white;
+        }
+        .swiper-pagination-progressbar .swiper-pagination-progressbar-fill{
+            background-color: #54a3a5;
+        }
+
+        .newsNextButton, .newsPrevButton{
+            color: #96c7f8;
+        }
+
+        .VseNovosti {
+            padding: 8px 11px 8px;
+            border: none;
+            margin-top: 20px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 15px !important;
+            background: #018a90;
+            border-bottom: 2px solid #015559;
+            color: #fff !important;
+            outline: none;
+            line-height: 1;
+        }
+
+        .VseNovostiLink{
+            margin-bottom: 100px;
+        }
+    </style>
+}
+
+@section Scripts{
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/animated-event-calendar/dist/jquery.simple-calendar.js"></script>
+    <script>
+        $(document).ready(function () {
+            const swiper1 = new Swiper(".mySwiper", {
+                spaceBetween: 10,
+                slidesPerView: 4,
+                freeMode: true,
+                watchSlidesProgress: true,
+            });
+            const swiper2 = new Swiper(".mySwiper2", {
+                spaceBetween: 10,
+                pagination: {
+                    el: ".swiper-pagination",
+                    type: "progressbar",
+                },
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                thumbs: {
+                    swiper: swiper1,
+                },
+            });
+            setShareLinks();
+        });
+        function socialWindow(url) {
+            var left = (screen.width - 570) / 2;
+            var top = (screen.height - 570) / 2;
+            var params = "menubar=no,toolbar=no,status=no,width=570,height=570,top=" + top + ",left=" + left;
+            window.open(url, "NewWindow", params);
+        }
+
+        function setShareLinks() {
+            var pageUrl = encodeURIComponent(document.URL);
+            var tweet = encodeURIComponent(jQuery("meta[property='og:description']").attr("content"));
+
+            $(".social-share.facebook").on("click", function () {
+                url = "https://www.facebook.com/sharer.php?u=" + pageUrl;
+                socialWindow(url);
+            });
+
+            $(".social-share.twitter").on("click", function () {
+                url = "https://twitter.com/intent/tweet?url=" + pageUrl + "&text=" + tweet;
+                socialWindow(url);
+            });
+        }
+    </script>
+
+}

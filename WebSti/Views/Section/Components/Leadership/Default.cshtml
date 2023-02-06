@@ -1,0 +1,231 @@
+﻿@model (ThemeDto themeDto,IPager<DocumentDto> documentDto)
+
+@{
+    ViewData["Title"] = Model.themeDto.Title;
+    bool isPrevYears = (bool)ViewData["PrevYears"];
+    int activeYear = (int)ViewData["ActiveYear"];
+
+    int years = DateTime.UtcNow.Year - 10;
+
+    if (isPrevYears)
+    {
+        years -= 11;
+    }
+    var culturename = System.Globalization.CultureInfo.CurrentCulture.Name;
+}
+
+<style>
+    .tax-card:hover {
+        background-color: rgba(0,137,147,0.1);
+    }
+
+    .modal {
+        overflow-y: auto !important;
+    }
+
+    .modal-dialog{
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+    }
+
+    .modal-content {
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }
+    .modal-body{
+            padding:0;
+        }
+
+    .tax-card img {
+        width: 75%;
+    }
+
+    .primary-color {
+        color: #018A90;
+    }
+
+    .active-link {
+        color: #018A90 !important;
+    }
+
+    .link {
+        color: #47404f;
+    }
+
+        .link:hover {
+            color: #018A90;
+        }
+
+    .border-bottom-primary {
+        border-bottom: 1px solid rgba(1, 138, 144, 0.5);
+    }
+
+    @@media screen and (max-width: 425px) {
+        
+        .modal{
+            left:auto;
+        }
+    }
+
+</style>
+
+@foreach (var item in Model.documentDto.OrderBy(x=>x.DocumentOrder))
+{
+    <div class="row tax-card my-24 border-bottom">
+        <div class="col-lg-4 col-md-4 col-sm-12 py-32 d-flex justify-content-center">
+            <img src="~/stsStorage/@item.FileUri" class="rounded-circle pl-12" />
+        </div>
+        <div class="col-lg-8 col-md-8 col-sm-12 py-32">
+            <p class="text-18">@item.Leadership.Position</p>
+            <p class="text-20 font-weight-bold primary-color">@item.Leadership.FullName</p>
+            <p class="text-16">Email: @item.Leadership.Email </p>
+            <p class="text-16">@Localize("timeofreception"): среда, с 15-00 до 17-00</p>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable_@item.Id">Биография</button>
+        </div>
+    </div>
+    <div class="modal modal-xl fade bd-example-modal-xl" id="exampleModalScrollable_@item.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle_@item.Id" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
+            <div class="modal-content ">
+                <div class="modal-header">
+                    <div class="col-12 text-center">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                        <p class="primary-color text-24">
+                            @Localize("curriculumvitae")
+                        </p>                        
+                    </div>           
+                </div>
+                <div class="modal-body">
+                    <div class="mx-36 my-24">                        
+                        <div class="col-12 text-left border-bottom my-24">
+                            <p class="primary-color font-weight-bold text-20">
+                                @item.Leadership.FullName
+                            </p>
+                            <p class="text-16">
+                                @item.Leadership.Position
+                            </p>
+                        </div>
+                        <div class="col-12 text-left border-bottom my-24">
+                            <p class="primary-color font-weight-bold text-20 pb-2">
+                                @Localize("Информация")
+                            </p>
+                            <p class="text-16 line-height-2">
+                                <span class="font-weight-bold">@Localize("birthdate"): </span>@item.Leadership.BirthDate.ToShortDateString()<br />
+                                <span class="font-weight-bold">@Localize("placeofbirth"): </span>@item.Leadership.BirthPlace<br />
+                                @foreach (var it in @item.Leadership.Education)
+                                {
+                                    <span class="font-weight-bold">@Localize("education"): </span>
+
+                                    @if (culturename == "ru-RU")
+                                    {
+                                        @($"{it.EducationTypeRu}, {it.UniversityNameRu}")
+                                    }
+                                    @if (culturename == "ky-KG")
+                                    {
+                                        @($"{it.EducationTypeKg}, {it.UniversityNameKg}")
+                                    }
+                                    @if (culturename == "en-US")
+                                    {
+                                        @($"{it.EducationTypeEn}, {it.UniversityNameEn}")
+                                    }
+                                    <br />
+
+                                    <span class="font-weight-bold">@Localize("speciality"): </span>
+                                    @if (culturename == "ru-RU")
+                                    {
+                                        @it.SpecialityRu
+                                    }
+                                    @if (culturename == "ky-KG")
+                                    {
+                                        @it.SpecialityKg
+                                    }
+                                    @if (culturename == "en-US")
+                                    {
+                                        @it.SpecialityEn
+                                    }
+                                    <br />
+                                }
+                                <span class="font-weight-bold">@Localize("specialrank"): </span>@item.Leadership.RankInSpeciality<br />
+                            </p>
+                        </div>
+                        <div class="col-12 text-left my-12">
+                            <p class="primary-color font-weight-bold text-20 pb-2">
+                                @Localize("labouractivity")
+                            </p>
+                        </div>
+                        <div class="row ml-1 border-bottom-primary">
+                            <div class="col-12 col-sm-12 col-md-4 col-xl-4 col-lg-4  text-left my-12">
+                                <p class="font-weight-bold text-16">
+                                    @Localize("yearofentry")
+                                </p>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-4 col-xl-4 col-lg-4 text-left my-12">
+                                <p class="font-weight-bold text-16">
+                                    @Localize("nameoforganization")
+                                </p>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-4 col-xl-4 col-lg-4  text-left my-12">
+                                <p class="font-weight-bold text-16">
+                                    @Localize("positionheld")
+                                </p>
+                            </div>
+                        </div>
+                        @foreach (var it in @item.Leadership.WorkExperiences.OrderBy(x=>x.WorkExperienceOrder))
+                        {
+                            <div class="col-12  row ml-1 border-bottom-primary">
+                                <div class="col-12 col-sm-12 col-md-4 col-xl-4 col-lg-4 text-left my-12">
+                                    <p class="text-16">
+
+                                        @it.YearEntryExit
+                                    </p>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-4 col-xl-4 col-lg-4  text-left my-12">
+                                    <p class="text-16">
+                                        @if (culturename == "ru-RU")
+                                        {
+                                            @it.CompanyNameRu
+                                        }
+                                        @if (culturename == "ky-KG")
+                                        {
+                                            @it.CompanyNameKg
+                                        }
+                                        @if (culturename == "en-US")
+                                        {
+                                            @it.CompanyNameEn
+                                        }
+                                    </p>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-4 col-xl-4 col-lg-4  text-left my-12">
+                                    <p class="text-16">
+                                        @if (culturename == "ru-RU")
+                                        {
+                                            @it.PositionRu
+                                        }
+                                        @if (culturename == "ky-KG")
+                                        {
+                                            @it.PositionKg
+                                        }
+                                        @if (culturename == "en-US")
+                                        {
+                                            @it.PositionEn
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+

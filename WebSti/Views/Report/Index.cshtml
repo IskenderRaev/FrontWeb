@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Формы отчетности";
+}
+
+<h2 class="my-4">
+    <b>Формы отчетности</b>
+</h2>
+<div class="mb-5">
+    <form asp-action="Index" method="get">
+        <div class="form-row align-items-center">
+            <div class="col-md-7">
+                <input type="text" class="form-control" id="searchKey" placeholder="Быстрый поиск в разделе" style="max-width:650px">
+            </div>
+            <div class="col-md-1">
+                <button type="submit" id="search" class="btn btn-primary text-white w-100">Найти</button>
+            </div>
+        </div>
+    </form>
+</div>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Главная страница</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Формы отчетности</li>
+    </ol>
+</nav>
+<div class="row">
+    <div class="col-md-8 mt-3">
+        <div class="row">
+            <div class="col-sm-4">
+                <a href="#" class="d-flex align-items-center border-bottom"> <img src="/images/fiscal.svg" />Налоговый кодекс</a>
+            </div>
+            <div class="col-sm-4">
+                <a href="#" class="d-flex align-items-center border-bottom"> <img src="/images/fiscal.svg" />Закон КР</a>
+            </div>
+            <div class="col-sm-4">
+                <a href="#" class="d-flex align-items-center border-bottom"> <img src="/images/fiscal.svg" />Постановления Правительства</a>
+            </div>
+            <div class="col-sm-4">
+                <a href="#" class="d-flex align-items-center border-bottom"> <img src="/images/fiscal.svg" />Распоряжения Правительства КР</a>
+            </div>
+            <div class="col-sm-4">
+                <a href="#" class="d-flex align-items-center border-bottom"> <img src="/images/fiscal.svg" />Налоговые соглашения</a>
+            </div>
+            <div class="col-sm-4">
+                <a href="#" class="d-flex align-items-center border-bottom"> <img src="/images/fiscal.svg" />Проекты нормативных правовых актов</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mt-3">
+        <div class="card">
+            <div class="pt-4 pb-2 pl-0 active-filter draw-border"><a href="#" class="text-decoration-none"><p class="mb-0 ml-5 banner-text">Формы отчетности</p></a></div>
+            <div class="py-3 pl-0 active-filter "><a href="#" class="text-decoration-none"><p class="mb-0 ml-5  banner-text">Единая налоговая <br /> декларация</p></a></div>
+            <div class="py-3 pl-0 active-filter "><a href="#" class="text-decoration-none"><p class="mb-0 ml-5  banner-text">Формы заявлений</p></a></div>
+            <div class="py-3 pl-0 active-filter "><a href="#" class="text-decoration-none"><p class="mb-0 ml-5  banner-text">Формы решений ГНС</p></a></div>
+            <div class="py-3 pl-0 active-filter "><a href="#" class="text-decoration-none"><p class="mb-0 ml-5  banner-text">Дополнительно</p></a></div>
+        </div>
+    </div>
+</div>

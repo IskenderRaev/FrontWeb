@@ -1,0 +1,152 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	    <NoWarn>1701;1702;1591</NoWarn>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	    <NoWarn>1701;1702;1591</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Include="wwwroot\js\site.js" />
+      <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
+      <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
+      <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css.map" />
+      <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css.map" />
+      <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map" />
+      <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map" />
+      <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map" />
+      <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css.map" />
+      <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css.map" />
+      <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css.map" />
+      <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map" />
+      <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map" />
+      <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
+      <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
+      <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map" />
+      <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map" />
+      <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js" />
+      <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map" />
+      <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
+      <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map" />
+      <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js" />
+      <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js.map" />
+      <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js" />
+      <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map" />
+      <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
+      <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js.map" />
+      <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
+      <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map" />
+      <None Include="wwwroot\lib\bootstrap\LICENSE" />
+      <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+      <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+      <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
+      <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
+      <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
+      <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
+      <None Include="wwwroot\lib\jquery-validation\LICENSE.md" />
+      <None Include="wwwroot\lib\jquery\dist\jquery.js" />
+      <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
+      <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
+    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AspNetCoreHero.ToastNotification" Version="1.1.0" />
+    <PackageReference Include="Humanizer.Core" Version="2.14.1" />
+    <PackageReference Include="Humanizer.Core.ru" Version="2.14.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.13">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\StiGovKg.Infrastructure\StiGovKg.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\swiper-master\.github\ISSUE_TEMPLATE\" />
+    <Folder Include="wwwroot\lib\swiper-master\.github\workflows\" />
+    <Folder Include="wwwroot\lib\swiper-master\.husky\" />
+    <Folder Include="wwwroot\lib\swiper-master\.nova\" />
+    <Folder Include="wwwroot\lib\swiper-master\.vscode\" />
+    <Folder Include="wwwroot\lib\swiper-master\cypress\e2e\modules\" />
+    <Folder Include="wwwroot\lib\swiper-master\cypress\fixtures\" />
+    <Folder Include="wwwroot\lib\swiper-master\cypress\support\" />
+    <Folder Include="wwwroot\lib\swiper-master\demos\images\" />
+    <Folder Include="wwwroot\lib\swiper-master\playground\angular\e2e\src\" />
+    <Folder Include="wwwroot\lib\swiper-master\playground\angular\src\app\detail\" />
+    <Folder Include="wwwroot\lib\swiper-master\playground\angular\src\app\home\" />
+    <Folder Include="wwwroot\lib\swiper-master\playground\angular\src\assets\" />
+    <Folder Include="wwwroot\lib\swiper-master\playground\angular\src\environments\" />
+    <Folder Include="wwwroot\lib\swiper-master\playground\core\" />
+    <Folder Include="wwwroot\lib\swiper-master\playground\react\" />
+    <Folder Include="wwwroot\lib\swiper-master\playground\solid\" />
+    <Folder Include="wwwroot\lib\swiper-master\playground\svelte\" />
+    <Folder Include="wwwroot\lib\swiper-master\playground\vue\" />
+    <Folder Include="wwwroot\lib\swiper-master\scripts\babel\" />
+    <Folder Include="wwwroot\lib\swiper-master\scripts\icon-font\" />
+    <Folder Include="wwwroot\lib\swiper-master\scripts\utils\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\angular\src\utils\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\components-shared\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\copy\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\core\breakpoints\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\core\check-overflow\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\core\classes\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\core\events\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\core\grab-cursor\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\core\images\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\core\loop\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\core\modules\observer\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\core\modules\resize\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\core\slide\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\core\transition\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\core\translate\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\core\update\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\icons\font\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\icons\svg\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\modules\a11y\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\modules\autoplay\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\modules\controller\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\modules\effect-cards\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\modules\effect-coverflow\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\modules\effect-creative\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\modules\effect-cube\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\modules\effect-fade\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\modules\effect-flip\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\modules\free-mode\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\modules\grid\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\modules\hash-navigation\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\modules\history\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\modules\keyboard\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\modules\lazy\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\modules\manipulation\methods\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\modules\mousewheel\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\modules\navigation\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\modules\pagination\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\modules\parallax\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\modules\scrollbar\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\modules\thumbs\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\modules\virtual\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\modules\zoom\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\react\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\shared\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\solid\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\svelte\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\types\modules\" />
+    <Folder Include="wwwroot\lib\swiper-master\src\vue\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Home\Questionnaire.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,22 @@
+﻿.bg-primary .press-link h5, .bg-primary .press-link .card-text {
+    color: #ffffff;
+}
+
+.bg-gray-200 .press-link h5, .bg-gray-200 .press-link .card-text {
+    color: #000000;
+}
+
+.press-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    display: flex;
+    color: #018A90;
+    margin-bottom: 15px;
+}
+
+    .press-icon i {
+        margin: auto;
+        font-size: 2rem;
+    }

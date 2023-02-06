@@ -1,0 +1,59 @@
+﻿@model IList<NewsCommandDto>
+
+<div class="card LastNews mt-3">
+    @*<div class="card-header">
+        <div class="row align-items-center">
+            <div class="col-sm-2 text-left">
+                <i class="bi bi-broadcast" style="color: #018A90; font-size: 2rem;"></i>
+            </div>
+            <div class="col-sm-5">
+                <h5 class="m-0 font-weight-bold">Новости</h5>
+            </div>
+            <div class="col-sm-5">
+                <a asp-controller="News" asp-action="Index" class="m-0">Bce новости <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>*@
+    <div class="content">
+    @foreach (var item in Model.OrderByDescending(x=>x.PublishDate))
+    {
+        <div class="cont">
+                <p class="small m-0 "><i class="bi bi-clock" style="color: #018A90; padding-right: 5px;"></i>@item.PublishDate.ToString("dd MMMM")</p>
+                <a asp-controller="News" asp-action="Details" asp-route-id="@item.Id">@item.Title</a>
+            @*<a asp-controller="News" asp-action="Details" asp-route-id="@item.Id">Подробнее</a>*@
+        </div>
+    }
+    </div>    
+</div>
+<style>
+    .content{
+        padding: 15px;
+    }
+
+    .LastNews{
+        border-radius:0;
+    }
+    .content div {
+        height: 50%;
+        width: 50%;
+    }
+    .content p {
+       color: #018A90;
+    }
+
+    .content a {
+        color: black;
+    }
+
+    /* Flexbox Styles */
+    .content {
+        display: flex;
+        flex-wrap: wrap;
+    }  
+
+    .cont{
+        padding-left: 0 0 0px 10px;
+        margin-bottom: 20px;
+        
+    }
+</style>

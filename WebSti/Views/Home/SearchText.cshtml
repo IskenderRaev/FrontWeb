@@ -1,0 +1,85 @@
+﻿@model GetSearchTextQuery
+@{
+    var foundItems = (IPager<FoundDocumentsDto>)ViewData["SearchedItem"];
+    int totalNumber = foundItems != null ? foundItems.TotalItemCount : 0;
+    var searchedTextHighlite = Model.SearchWord;  
+    var culturename = System.Globalization.CultureInfo.CurrentCulture.Name;
+}
+
+<div class="row">
+    <div class="col-12 mb-5">        
+            <div class="mt-5">
+            <h3>@Localize("searchresult"): @totalNumber</h3>
+            <h5>@Localize("keyword") '<a id="text-to-search">@Html.Raw(@searchedTextHighlite)</a>'</h5>
+            </div>                     
+    </div>
+    <div class="col-12">     
+        @if (foundItems.Any())
+        {
+            @foreach (var item in foundItems)
+            {
+                <div class="col-md-12 border-bottom mb-3 SearchText" id="paragraph">
+                    @if (item.SearchedType == 1)
+                    {
+                        <a href="/0/@item.SubsectionId?themeId=@item.ThemeId" style="color:#018A90;">
+                            <p class="main-text info-text-type">@item.Header</p>
+                        </a>
+                        <p id="p">@Html.Raw(!String.IsNullOrEmpty(item.HtmlString) ? item.HtmlString.Substring(0, Math.Min(item.HtmlString.Length, 500)) : item.HtmlString)</p>
+                       
+
+                    }
+                    else if (item.SearchedType == 2)
+                    {
+                        <a href="/news/details/@item.Id" style="color:#018A90;">
+                            <p class="main-text info-text-type">@item.Header</p>
+                        </a>
+                        <p id="p">@Html.Raw(!String.IsNullOrEmpty(item.HtmlString) ? item.HtmlString.Substring(0, Math.Min(item.HtmlString.Length, 500)) : item.HtmlString)</p>
+                        
+                    }
+                </div>
+            }
+        }
+        else{             
+            <h4 class="mt-5">
+                <b>@Localize("searchfailed")</b>
+            </h4>  
+        }
+        @Html.Pager(foundItems, page => Url.Action("SearchText", new
+        {
+        page
+        }),
+        new PagerOptions
+        {
+        PagesToDisplay = 10,
+        ClassToActiveLi = "text-black-50 border-0",
+        ClassToLi = "text-black-50 border-0 text-dark mt-3",
+        ClassToPagerContainer = "d-flex justify-content-center"
+        })
+    </div>
+</div>
+<style>
+    .highlight{
+        background: yellow;
+    }
+</style>
+@section Scripts{
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/animated-event-calendar/dist/jquery.simple-calendar.js"></script>
+
+<script>
+     $(document).ready(function () {
+            let searchText = document.getElementById("text-to-search").innerText;
+            $("p").each(function(index, content){             
+                var content = $(content).text(); 
+                var searchExp = new RegExp(searchText, "ig");  
+                var matches = content.match(searchExp);
+                if (matches)
+                {
+                    $(this).html(content.replace(searchExp, function(match){
+                        return "<span class='highlight'>" + match + "</span>";
+                    }));
+                }               
+            }) 
+    });
+</script>
+}

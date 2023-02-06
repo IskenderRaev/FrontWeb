@@ -1,0 +1,424 @@
+﻿@model (ThemeCommandDto themeDto,IPager<DocumentDto> documentDto)
+
+@{
+    ////ToDo: в перспективе избавитья от булевого и активного года
+    bool isPrevYears = (bool)ViewData["PrevYears"];
+    int activeYear = (int)ViewData["ActiveYear"];
+    ////Id приходит с родительской вложенности
+    int tableId = (int)ViewData["TableId"];
+    ////Для формирования индекса года при прокрутке в Предыдущий и Следующий
+    int yearCounter = 0;
+    int years = DateTime.UtcNow.Year - 10;
+    if (isPrevYears)
+    {
+        years -= 11;
+    }
+}
+@if (Model.themeDto.IsBreakdownByYear || (Model.themeDto.IsBreakdownByYear && Model.themeDto.IsAdditionalFile) || (Model.themeDto.IsBreakdownByYear && Model.themeDto.IsUrl) || (Model.themeDto.IsBreakdownByYear && Model.themeDto.IsUrl && Model.themeDto.IsAdditionalFile))
+{
+    <div class="mb-5 breackDownByYearMainDiv" id="document">
+        <div class="row">
+            <div class="breackDownByYear btn-group col-12">
+                @if (years != 2000)
+                {
+                    <a class="btn btn-block btn-outline-primary breackDownByYearFirstDiv highlitePrevButton_@tableId" onclick="PrevYear(@tableId)">Предыдущие годы</a>
+                }
+                @for (var i = years; i <= years + 10; i++)
+                {
+                    <a id="yearBreakDocument_@tableId@yearCounter" onclick="DocumentFunction(@yearCounter, true, '@Model.themeDto.Id', @tableId)" class="breakYear_@tableId btn btn-outline-primary w-100 @(i == activeYear ? "active" : null)">
+                        @i</a>
+                    yearCounter++;
+                }
+                <a class="btn btn-block btn-outline-primary highliteNextButton_@tableId" onclick="NextYear(@tableId)">Следующие годы</a>
+            </div>
+        </div> 
+    </div>
+    <table class="table" id="IsBreakdownByYearTable_@tableId">
+        <thead>
+            <tr>
+                <th scope="col" class="widthOfColum">Номер документа</th>
+                <th scope="col">Наименование</th>
+                <th scope="col" class="text-center">Файл</th>
+                @if (Model.themeDto.IsAdditionalFile)
+                {
+                    <th scope="col" class="text-center">Порядок заполнения отчета</th>
+                }
+                @if (Model.themeDto.IsUrl)
+                {
+                    <th scope="col" class="text-center">Ссылка</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model.documentDto.OrderBy(x => x.DocumentOrder))
+            {
+                <tr>
+                    <td class="tdDocNumber_@tableId">@item.DocNumber</td>
+                    <td class="tdTitle_@tableId">@item.Title <br><p class="documentDateHighlited">@item.DocDate</p></td>
+                    <td class="text-center tdFileUri_@tableId" style="font-family: iconsmind; font-size: 28px;">
+                        <a class="linkFileUri_@tableId" href="~/stsStorage/@item.FileUri" target="_blank" rel="noopener noreferrer">
+                            @Html.Raw(item.FileIcon)
+                        </a>
+                    </td>
+                    @if (!string.IsNullOrWhiteSpace(@item.AdditionalFileUri))
+                    {
+                        <td class="text-center tdAdditionalFileUri_@tableId" style="font-family: iconsmind; font-size: 28px;">
+                            <a class="linkAdditionalFileUri_@tableId" href="~/stsStorage/@item.AdditionalFileUri" target="_blank" rel="noopener noreferrer">
+                                @Html.Raw(item.AdditionalFileIcon)
+                            </a>
+                        </td>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(@item.Url))
+                    {
+                        <td class="text-center tdUri_@tableId" style="font-family: iconsmind; font-size: 28px;">
+                            <a class="linkUrl_@tableId" href="@item.Url" target="_blank" rel="noopener noreferrer">
+                                @Html.Raw(item.UrlIcon)
+                            </a>
+                        </td>
+                    }
+                </tr>
+            }
+            @if (Model.documentDto.Count() ==0)
+            {
+                <tr>
+                    <td class="tdDocNumber_@tableId"></td>
+                    <td class="tdTitle_@tableId"></td>
+                    <td class="text-center tdFileUri_@tableId" style="font-family: iconsmind; font-size: 28px;">
+                        <a class="linkFileUri_@tableId" href="#" target="_blank" rel="noopener noreferrer">
+                        </a>
+                    </td>
+                    @if (Model.themeDto.IsAdditionalFile)
+                    {
+                        <td class="text-center tdAdditionalFileUri_@tableId" style="font-family: iconsmind; font-size: 28px;">
+                            <a class="linkAdditionalFileUri_@tableId" href="#" target="_blank" rel="noopener noreferrer">
+                            </a>
+                        </td>
+                    }
+                    @if (Model.themeDto.IsUrl)
+                    {
+                        <td class="text-center tdUri_@tableId" style="font-family: iconsmind; font-size: 28px;">
+                            <a class="linkUrl_@tableId" href="#" target="_blank" rel="noopener noreferrer">
+                                
+                            </a>
+                        </td>
+                    }
+                </tr>
+
+            }
+        </tbody>
+    </table>
+}
+
+@if (Model.themeDto.IsUrl && !Model.themeDto.IsBreakdownByYear)
+{
+    <div class="row document_link">    
+        @foreach (var item in Model.documentDto.OrderBy(x=>x.DocumentOrder))
+        {
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 justify-between mt-3 ">
+                <div class="row align-items-center panel panel-default baseBlock2 h-100">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 panel-body p-0" style="font-family: iconsmind">
+                        <a href="@item.Url" target="_blank" rel="noopener noreferrer"><span style="font-size: 30px; color:#018A90;">@Html.Raw(item.UrlIcon)</span></a>
+                    </div>
+                    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10 panel-body p-0"><a href="@item.Url" target="_blank" ><span class="">@item.Title</span></a></div>
+                </div>
+            </div>
+        }     
+     </div>
+}
+
+@if (Model.themeDto.IsPost)
+{
+    @foreach (var item in Model.documentDto.OrderBy(x => x.DocumentOrder))
+    {
+
+        <div class="card" style="background-color:transparent;border-radius: 1px;">
+                    <div class="card-header" style="background-color:transparent;border-radius: 1px;">
+                        <div class="panel panel-default">
+            <div class="panel-body asd">@Html.Raw(item.HtmlString)</div>
+        </div>
+                    </div>
+                    </div>
+                    <br/>
+        
+    }
+}
+@if (Model.themeDto.IsAdditionalFile && !Model.themeDto.IsBreakdownByYear)
+{
+    <div class="row document_link">
+        @foreach (var item in Model.documentDto.OrderBy(x => x.DocumentOrder))
+        {
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 justify-between mt-3 ">
+                <div class="row align-items-center panel panel-default baseBlock2 h-100">
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-6 col-6 panel-body p-0" style="font-family: iconsmind">
+                        <a href="~/stsStorage/@item.AdditionalFileUri" target="_blank" rel="noopener noreferrer"><span style="font-size: 30px; color:#018A90;">@Html.Raw(item.AdditionalFileIcon)</span></a>
+                    </div>
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-6 col-6 panel-body p-0">
+                        <p><span class="">@item.DocNumber</span></p>
+                    </div>
+                    <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 panel-body p-0">
+                        <div><a href="~/stsStorage/@item.AdditionalFileUri" target="_blank" rel="noopener noreferrer" style="line-height: 1.2;"><span class="">@item.Title</span></a></div>
+                        <div class="text-start"><p class="documentDateHighlited">@item.DocDate</p></div>
+                     </div>
+                </div>
+            </div>        
+        }
+    </div>
+}
+
+<script>
+    function stripHtml(html)
+    {
+        remove();
+        console.log("console.log(html);");
+        console.log(html);
+        let tmp = document.createElement("asd");
+        tmp.innerHTML = html;
+        return tmp.textContent || tmp.innerText || "";
+    }  
+    
+    function PrevYear(yearTableId){
+        //вытаскиваем года по классу и перезаписываем с уменьшением на 10 лет
+        var docPrevYearElements = document.querySelectorAll('.breakYear_' + yearTableId).forEach((el) => {
+            el.innerHTML = Number(el.textContent) - 10;
+        });      
+        $('.breakYear_' + yearTableId).removeClass('active');
+        let highlitePrevButton = document.querySelector('.highlitePrevButton_' + yearTableId).classList.add("active");
+        let highliteNextButton = document.querySelector('.highliteNextButton_' + yearTableId).classList.remove("active");
+    }
+    function NextYear(yearTableId) {
+        //вытаскиваем года по классу и перезаписываем с увеличением на 10 лет
+        var docNextYearElements = document.querySelectorAll('.breakYear_' + yearTableId).forEach((yer) => {
+            yer.innerHTML = Number(yer.textContent) + 10;
+        });
+        $('.breakYear_' + yearTableId).removeClass('active');
+        let highlitePrevButton = document.querySelector('.highlitePrevButton_' + yearTableId).classList.remove("active");
+        let highliteNextButton = document.querySelector('.highliteNextButton_' + yearTableId).classList.add("active");
+    }
+
+    //Функция отправляет Аякс запрос в базу для получения документов для разбивки по годам
+    async function DocumentFunction(yearCounter, boolyear, themeId, tableId) {
+        //Собираем год по Id и коунтеру (yearCounter)
+        let year = document.getElementById('yearBreakDocument_' + tableId + yearCounter).innerText;
+
+        //Счетчик нажатия кнопки ГОД (При вызове функции DocumentFunction() счетчик увеличивается)
+        yearDocumentCounter++;
+        let isNotCurrentYearPassed = true;
+
+        //Если он нажал в первый раз этот же год дважды (Например 2022 год нажал дважды)
+        if(yearDocumentCounter===1 && @activeYear===year)
+        {
+            isNotCurrentYearPassed = false;
+        }
+        //Первое нажатие кнопки следующего года не равного этому году (он нажал не 2022 год, а например 2019 год)
+        if (yearDocumentCounter===1 && @activeYear!=year) {
+            $('#IsBreakdownByYearTable_' + tableId + ' tbody tr').slice(1).remove();
+        }        
+        //Если год нажатый не равен этому году (например нажал не 2022 год)
+        if (isNotCurrentYearPassed === true) {      
+            if (yearDocumentCounter >= 2) {
+                $('#IsBreakdownByYearTable_' + tableId + ' tbody tr').slice(1).remove();
+            }
+            ///// Логика на добавление и снятие класса подсветки (active)
+            $('.breakYear_' + tableId).removeClass('active');
+            let breakYear_ = document.getElementById('yearBreakDocument_' + tableId + yearCounter).classList.add("active");
+            var documentsAjax = [];
+            //Аякс запрос в базу для получения документов для разбивки по годам
+            var ajaxDocumentBreakByYear = await $.ajax({
+                type: 'GET',
+                url: '/TakeDocumentAsync',
+                data: { themeId: themeId, year: year, prevYears: boolyear },
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (data, status) {
+                    console.log(status);                
+                },
+                error: function (request, status, error) {
+                        console.log(status);
+                }
+            });  
+            //Маппинг данных возвращенных с Аякс запроса
+            documentsAjax = $.map(ajaxDocumentBreakByYear, function (doc) {
+                return {
+                    id: doc.id,
+                    title: doc.title,
+                    docNumber: doc.docNumber,
+                    docDate: doc.docDate,
+                    fileUri: doc.fileUri,
+                    additionalFileUri: doc.additionalFileUri,
+                    themeId: doc.themeId,
+                    themeName: doc.themeName,
+                    isAdditionalFile: doc.isAdditionalFile,
+                    url: doc.url,
+                    htmlString: doc.htmlString,
+                    leadership: doc.leadership,
+                    fileIcon: doc.fileIcon,
+                    additionalFileIcon:doc.additionalFileIcon,
+                    urlIcon: doc.urlIcon
+                };
+            });        
+            //Если в нажатом году есть документы то он зачищает данные (есть два условия, либо есть документы либо их нет)         
+            if (documentsAjax.length > 0) {
+                // Если в документе только разбивка по годам без ссылки и документа
+                if (documentsAjax[0].fileUri && !documentsAjax[0].additionalFileUri && !documentsAjax[0].url){
+                    //Приписывает данные первого документа
+                    $('.tdTitle_' + tableId).html(documentsAjax[0].title + '<br><p class="documentDateHighlited" >' + documentsAjax[0].docDate + '</p>');
+                    $('.tdDocNumber_' + tableId).html(documentsAjax[0].docNumber);
+                    $('.tdFileUri_' + tableId).html('<a class="linkFileUri_' + tableId + '" href = "/stsStorage/' + documentsAjax[0].fileUri + '" target="_blank" rel="noopener noreferrer">' + documentsAjax[0].fileIcon + '</a > ');
+                    //Приписывает данные следующего документа, счетчик начинается с i=1
+                    for (let i = 1; i < documentsAjax.length; i++) {
+                        $('#IsBreakdownByYearTable_' + tableId + ' tbody').append(
+                            '<tr>' +
+                            '<td>' +
+                            documentsAjax[i].docNumber +
+                            '</td>' +
+                            '<td>' +
+                            documentsAjax[i].title + '<br><p class="documentDateHighlited" >' + documentsAjax[i].docDate + '</p>' +
+                            '</td>' +
+                            '<td class="text-center tdFileUri_' + tableId + '" style = "font-family: iconsmind; font-size: 28px;">' +
+                            '<a class="linkFileUri_' + tableId + '" ' + 'href="/stsStorage/' + documentsAjax[i].fileUri + '" target="_blank" rel="noopener noreferrer">' + documentsAjax[i].fileIcon + '</a>' +
+                            '</td>' +                            
+                            '</tr>');
+                    }
+                }
+                // Если в документе разбивка по годам со ссылкой и документом
+                else if (documentsAjax[0].fileUri && documentsAjax[0].additionalFileUri && documentsAjax[0].url) {
+                    //Приписывает данные первого документа     
+                    $('.tdTitle_' + tableId).html(documentsAjax[0].title + '<br><p class="documentDateHighlited" >' + documentsAjax[0].docDate + '</p>');
+                    $('.tdDocNumber_' + tableId).html(documentsAjax[0].docNumber);
+                    $('.tdFileUri_' + tableId).html('<a class="linkFileUri_' + tableId + '" href = "/stsStorage/' + documentsAjax[0].fileUri + '" target="_blank" rel="noopener noreferrer">' + documentsAjax[0].fileIcon + '</a > ');
+                    $('.tdAdditionalFileUri_' + tableId).html('<a class="linkAdditionalFileUri_' + tableId + '" href = "/stsStorage/' + documentsAjax[0].additionalFileUri + '" target="_blank" rel="noopener noreferrer">' + documentsAjax[0].additionalFileIcon + '</a > ');
+                    $('.tdUri_' + tableId).html('<a class="linkUrl_' + tableId + '" href = "' + documentsAjax[0].url + '" target="_blank" rel="noopener noreferrer">' + documentsAjax[0].urlIcon + '</a > ');
+                    //Приписывает данные следующего документа, счетчик начинается с i=1
+                    for (let i = 1; i < documentsAjax.length; i++) {
+                        $('#IsBreakdownByYearTable_' + tableId + ' tbody').append(
+                            '<tr>' +
+                            '<td>' +
+                            documentsAjax[i].docNumber +
+                            '</td>' +
+                            '<td>' +
+                            documentsAjax[i].title + '<br><p class="documentDateHighlited" >' + documentsAjax[i].docDate + '</p>' +
+                            '</td>' +
+                            '<td class="text-center tdFileUri_' + tableId + '" style = "font-family: iconsmind; font-size: 28px;">' +
+                            '<a class="linkFileUri_' + tableId + '" ' + 'href="/stsStorage/' + documentsAjax[i].fileUri + '" target="_blank" rel="noopener noreferrer">' + documentsAjax[i].fileIcon + '</a>' +
+                            '</td>' +
+                            '<td class="text-center tdAdditionalFileUri_' + tableId + '" style = "font-family: iconsmind; font-size: 28px;">' +
+                            '<a class="linkAdditionalFileUri_' + tableId + '" ' + 'href="/stsStorage/' + documentsAjax[i].additionalFileUri + '" target="_blank" rel="noopener noreferrer">' + documentsAjax[i].additionalFileIcon + '</a>' +
+                            '</td>' +
+                            '<td class="text-center tdUri_' + tableId + '" style = "font-family: iconsmind; font-size: 28px;">' +
+                            '<a class="linkUrl_' + tableId + '" ' + 'href="' + documentsAjax[i].url + '" target="_blank" rel="noopener noreferrer">' + documentsAjax[i].urlIcon + '</a>' +
+                            '</td>' +
+                            '</tr>');
+                    }
+                    
+                }  
+                // Если в документе разбивка по годам с документом
+                else if (documentsAjax[0].fileUri && documentsAjax[0].additionalFileUri) {
+                    //Приписывает данные первого документа
+                    $('.tdTitle_' + tableId).html(documentsAjax[0].title + '<br><p class="documentDateHighlited" >' + documentsAjax[0].docDate + '</p>');
+                    $('.tdDocNumber_' + tableId).html(documentsAjax[0].docNumber);
+                    $('.tdFileUri_' + tableId).html('<a class="linkFileUri_' + tableId + '" href = "/stsStorage/' + documentsAjax[0].fileUri + '" target="_blank" rel="noopener noreferrer">' + documentsAjax[0].fileIcon + '</a > ');
+                    $('.tdAdditionalFileUri_' + tableId).html('<a class="linkAdditionalFileUri_' + tableId + '" href = "/stsStorage/' + documentsAjax[0].additionalFileUri + '" target="_blank" rel="noopener noreferrer">' + documentsAjax[0].additionalFileIcon + '</a > ');
+                    //Приписывает данные следующего документа, счетчик начинается с i=1
+                    for (let i = 1; i < documentsAjax.length; i++) {
+                        $('#IsBreakdownByYearTable_' + tableId + ' tbody').append(
+                            '<tr>' +
+                            '<td>' +
+                            documentsAjax[i].docNumber +
+                            '</td>' +
+                            '<td>' +
+                            documentsAjax[i].title + '<br><p class="documentDateHighlited" >' + documentsAjax[i].docDate + '</p>' +
+                            '</td>' +
+                            '<td class="text-center tdFileUri_' + tableId + '" style = "font-family: iconsmind; font-size: 28px;">' +
+                            '<a class="linkFileUri_' + tableId + '" ' + 'href="/stsStorage/' + documentsAjax[i].fileUri + '" target="_blank" rel="noopener noreferrer">' + documentsAjax[i].fileIcon + '</a>' +
+                            '</td>' +
+                            '<td class="text-center tdAdditionalFileUri_' + tableId + '" style = "font-family: iconsmind; font-size: 28px;">' +
+                            '<a class="linkAdditionalFileUri_' + tableId + '" ' + 'href="/stsStorage/' + documentsAjax[i].additionalFileUri + '" target="_blank" rel="noopener noreferrer">' + documentsAjax[i].additionalFileIcon + '</a>' +
+                            '</td>' +
+                            '</tr>');
+                    }
+                }
+                // Если в документе разбивка по годам со ссылкой
+                else if (documentsAjax[0].fileUri && documentsAjax[0].url) {
+                    //Приписывает данные первого документа
+                    $('.tdTitle_' + tableId).html(documentsAjax[0].title + '<br><p class="documentDateHighlited" >' + documentsAjax[0].docDate + '</p>');
+                    $('.tdDocNumber_' + tableId).html(documentsAjax[0].docNumber);
+                    $('.tdFileUri_' + tableId).html('<a class="linkFileUri_' + tableId + '" href = "/stsStorage/' + documentsAjax[0].fileUri + '" target="_blank" rel="noopener noreferrer">' + documentsAjax[0].fileIcon + '</a > ');
+                    $('.tdUri_' + tableId).html('<a class="linkUrl_' + tableId + '" href = "' + documentsAjax[0].url + '" target="_blank" rel="noopener noreferrer">' + documentsAjax[0].urlIcon + '</a > ');
+                    //Приписывает данные следующего документа, счетчик начинается с i=1
+                    for (let i = 1; i < documentsAjax.length; i++) {
+                        $('#IsBreakdownByYearTable_' + tableId + ' tbody').append(
+                            '<tr>' +
+                            '<td>' +
+                            documentsAjax[i].docNumber +
+                            '</td>' +
+                            '<td>' +
+                            documentsAjax[i].title + '<br><p class="documentDateHighlited" >' + documentsAjax[i].docDate + '</p>' +
+                            '</td>' +
+                            '<td class="text-center tdFileUri_' + tableId + '" style = "font-family: iconsmind; font-size: 28px;">' +
+                            '<a class="linkFileUri_' + tableId + '" ' + 'href="/stsStorage/' + documentsAjax[i].fileUri + '" target="_blank" rel="noopener noreferrer">' + documentsAjax[i].fileIcon + '</a>' +
+                            '</td>' +
+                            '<td class="text-center tdUri_' + tableId + '" style = "font-family: iconsmind; font-size: 28px;">' +
+                            '<a class="linkUrl_' + tableId + '" ' + 'href="' + documentsAjax[i].url + '" target="_blank" rel="noopener noreferrer">' + documentsAjax[i].urlIcon + '</a>' +
+                            '</td>' +
+                            '</tr>');
+                    }
+                }
+            }
+            //Если в нажатом году нет документов то он зачищает данные
+            else if (documentsAjax.length===0) {
+                $('.tdTitle_' + tableId).html('');
+                $('.tdDocNumber_' + tableId).html('');
+                $('.tdFileUri_' + tableId).html('');
+                $('.tdAdditionalFileUri_' + tableId).html('');
+                $('.tdUri_' + tableId).html('');
+            }
+        }
+    }
+</script>
+
+<style>
+    .documentDateHighlited{
+        font-size:13px;
+        color: #859999;
+    }
+    .document_link .panel{
+        text-align: center;
+        background-color: transparent;        
+        border-radius:0;
+        line-height: 0.9;
+        min-height:80px;
+        padding: 0.25rem;
+        border: 1px red;
+        box-shadow: 0 4px 20px 1px rgb(0 0 0 / 6%), 0 1px 4px rgb(0 0 0 / 8%);
+        border: 0;
+        margin: 1.5px;
+    }
+    .document_link .panel-body{        
+        color: black;
+    }
+    .document_link .panel-body .DocLinkIcon{
+        font-size: 30px;
+        color:#018A90; 
+    }
+    .document_link .panel-body span{
+        color: #333335eb;
+    }
+    .baseBlock2 {
+        overflow: hidden;
+        -moz-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        -o-transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        box-shadow: 0 4px 20px 1px rgb(0 0 0 / 6%), 0 1px 4px rgb(0 0 0 / 8%);
+        border: 0;
+        position: relative;
+    }
+
+    .baseBlock2:hover {
+        -webkit-transform: translate(0, -8px);
+        -moz-transform: translate(0, -8px);
+        -ms-transform: translate(0, -8px);
+        -o-transform: translate(0, -8px);
+        transform: translate(0, -8px);
+    }
+</style>

@@ -1,0 +1,32 @@
+﻿@model IEnumerable<CalendarDto>
+@{
+
+}
+<div class="mt-2 mb-5">
+    <div class="col-md-12" style="height: 100%;">     
+        <div class="wip mt-5 mb-5 text-center">
+            <form asp-action="GetFile" method="post">
+            <h1>
+                Календари налогоплательщика по срокам уплаты и представления налоговой отчетности
+            </h1>
+            <table class="table">
+                <thead>               
+                        <tr>
+                            <th>Год календарей</th>
+                            <th>Язык календарей</th>               
+                       </tr>
+                </thead>
+                <tbody>
+                @foreach(var item in Model){                                   
+                        <tr>
+                            <td>@item.CalendarDate</td>
+                            <td>@item.Language.GetDisplayValue()</td>
+                            <td><a href="~/stsStorage/@item.CalendarPath">Скачать</a></td>                                
+                        </tr>                  
+                }
+               </tbody>
+            </table>
+            </form>
+        </div>
+    </div>
+</div>

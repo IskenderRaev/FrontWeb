@@ -1,0 +1,21 @@
+﻿@model CreateOfferCommands
+
+<form method="post" asp-controller="Home" asp-action="AcceptanceOfProposals">
+    <div class="mt-2 mb-5">
+        <div class="col-md-12" style="height: 37em;">
+            <div class="wip mt-5 mb-5 text-center">
+                <div class="form-group">
+                    <h3>Прием предложений по улучшению работы сайта налоговой службы</h3>
+                    <textarea asp-for="@Model.Text" id="form_message" name="Text" class="form-control" placeholder="Оставьте комментарии и предложения по сайту" rows="8" required="required"
+                              data-error="Please, leave us a message.">
+                    </textarea>
+                    <span asp-validation-for="@Model.Text" class="text-danger"></span>
+                <div class="help-block with-errors"></div>
+                    @*капча*@              
+                    <input type="submit" class="btn btn-success btn-send" value="Отправить">
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+    

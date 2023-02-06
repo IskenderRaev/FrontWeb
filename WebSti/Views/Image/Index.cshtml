@@ -1,0 +1,41 @@
+﻿@model GetImagesQueryUI
+
+@{
+    ViewData["Title"] = "Изображения";
+
+    var images = (IPager<ImageDto>)ViewData["Images"];
+}
+<div style="text-align: center; color: #3f3f3f; padding: 40px 20px 25px; opacity: 0.9;">
+    <h2> Фото галерея</h2>
+</div>
+<div class="content mb-5">
+    @foreach (var item in images)
+    {
+        <a class="elem" href="@Url.Content($"~/stsStorage/{item.ImagePath}")" title="image 1" data-lcl-txt="lorem ipsum dolor sit amet" data-lcl-author="someone" data-lcl-thumb="@Url.Content($"~/stsStorage/{item.ImagePath}")">
+            <span style="background-image: url('@Url.Content($"~/stsStorage/{item.ImagePath}")');"></span>
+        </a>
+    }
+    <br><br>
+</div>
+
+@section Scripts {
+    <environment names="Development,Staging,Production">
+        <script type="text/javascript">
+            $(document).ready(function (e) {
+
+                // live handler
+                lc_lightbox('.elem', {
+                    wrap_class: 'lcl_fade_oc',
+                    gallery: true,
+                    thumb_attr: 'data-lcl-thumb',
+
+                    skin: 'minimal',
+                    radius: 0,
+                    padding: 0,
+                    border_w: 0,
+                });
+
+            });
+        </script>
+    </environment>
+    }

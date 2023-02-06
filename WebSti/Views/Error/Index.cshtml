@@ -1,0 +1,37 @@
+﻿@model int
+@{
+    Layout = null;
+    string errorMsg = Model switch
+    {
+        403 => "Доступ на данную страницу закрыт.",
+        404 => "Данная страница не найдена",
+        500 => "Ошибка сервера. Попробуйте позже.",
+        _ => "Что-то произошло не так.",
+    };
+}
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ошибка</title>
+    <link href="/css/nunito_fonts.css" rel="stylesheet" />
+    <link href="~/css/lite-purple.min.css" rel="stylesheet">
+</head>
+<div class="not-found-wrap text-center">
+    <h1 class="text-60">@Model</h1>
+    <p class="text-36 subheading mb-3">Ошибка!</p>
+    <p class="mb-5 text-muted text-18">@errorMsg</p>
+    <a class="btn btn-lg btn-primary btn-rounded" asp-controller="Home" asp-action="Index">Вернуться на главную</a>
+</div>
+
+
+@*@{
+    ViewData["Title"] = "Ошибка";
+}
+
+<div class="error-block my-5" >
+    <img src="~/images/404.png" alt="Страница не найдена" />
+    <a  class="btn home-button" asp-action="HomeIndex"><p class="p-0 m-0">Перейти на главную страницу</p></a>
+</div>*@

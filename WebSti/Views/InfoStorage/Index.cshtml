@@ -1,0 +1,60 @@
+﻿@{ 
+    ViewData["Title"] = "База знаний";
+}
+<h2 class="my-4">
+    <b>База знаний</b>
+</h2>
+<div class="row">
+    <div class="col-md-8 mt-3">
+        <p>
+            Для вашего удобства мы собрали все необходимые справочные данные в одном месте. Чтобы вы могли легко
+            найти нужный вам закон, постановление или распоряжение правительства, а также любую другую
+            дополнительную информацию о налоговых режимах и особенностях налогооблажения
+        </p>
+        <div class="mb-5">
+            <form asp-action="Index" method="get">
+                <div class="form-row align-items-center">
+                    <div class="fg-search">
+                        <input type="text" class="form-control text-muted" placeholder="Быстрый поиск в разделе">
+                    </div>
+
+                </div>
+            </form>
+        </div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Главная страница</a></li>
+                <li class="breadcrumb-item"><a href="#">База знаний</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Нормативно - правовые акты</li>
+            </ol>
+        </nav>
+    <div class="row">
+        <div class="col-sm-4">
+            <a href="#" class="d-flex align-items-center border-bottom"> <img src="/images/fiscal.svg" />Налоговый кодекс</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="#" class="d-flex align-items-center border-bottom"> <img src="/images/fiscal.svg" />Закон КР</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="#" class="d-flex align-items-center border-bottom"> <img src="/images/fiscal.svg" />Постановления Правительства</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="#" class="d-flex align-items-center border-bottom"> <img src="/images/fiscal.svg" />Налоговые соглашения</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="#" class="d-flex align-items-center border-bottom"> <img src="/images/fiscal.svg" />Проекты нормативных правовых актов</a>
+        </div>
+    </div>
+    </div>
+    <div class="col-md-4 mt-3">
+        <div class="card">
+            <div class="pt-4 pb-2 pl-0 active-filter draw-border"><a href="#" class="text-decoration-none"><p class="mb-0 ml-5 banner-text">Нормативно-правовые акты</p></a></div>
+            <div class="py-3 pl-0 active-filter "><a href="#" class="text-decoration-none"><p class="mb-0 ml-5  banner-text">Информация для> налогоплательщиков</p></a></div>
+            <div class="py-3 pl-0 active-filter "><a href="#" class="text-decoration-none"><p class="mb-0 ml-5  banner-text">Страховые взносы</p></a></div>
+            <div class="py-3 pl-0 active-filter "><a href="#" class="text-decoration-none"><p class="mb-0 ml-5  banner-text">Дополнительная информация</p></a></div>
+            <div class="py-3 pl-0 active-filter "><a href="#" class="text-decoration-none"><p class="mb-0 ml-5  banner-text">Евразийский экономический союз</p></a></div>
+            <div class="py-3 pl-0 active-filter "><a href="#" class="text-decoration-none"><p class="mb-0 ml-5  banner-text">Ссылки на веб сайты законодательной и исполнительной влсти КР</p></a></div>
+            <div class="py-3 pl-0 active-filter "><a href="#" class="text-decoration-none"><p class="mb-0 ml-5  banner-text">Сотрудничество со всемирным банком</p></a></div>
+        </div>
+    </div>
+</div>
